@@ -1,0 +1,21 @@
+.person {
+    width: 100%;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1rem auto;
+    }
+
+    h2 {
+        font-size: 3rem;
+        font-weight: 500;
+    }
+
+    img {
+        height: 40%;
+        width: 40%;
+    }
+}
+
