@@ -1,9 +1,19 @@
-.people {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    overflow-y: scroll;
-    height: 9.6rem;
-    width: 30%;
+@import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
+
+section {
+
+    h2 {
+        font-size: 3rem;
+        font-weight: 700;
+        text-align: center;
+        font-family: Bebas Neue, sans-serif;
+        color: blue;
+    }
+    
+    .people {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-between;
+        padding: 1rem 3rem 5rem;
+    }
 }

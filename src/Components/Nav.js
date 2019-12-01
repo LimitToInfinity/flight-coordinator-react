@@ -4,13 +4,13 @@ import './../Stylesheets/Nav.scss';
 
 import Person from "./Person";
 
-function Nav({ person, setPerson }) {
+function Nav({ person, togglePerson }) {
 
     return (
         <nav>
             <Person
-                setPerson={ setPerson }
                 person={ person }
+                togglePerson={ togglePerson }
             />
         </nav>
     );

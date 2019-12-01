@@ -4,47 +4,86 @@ import './../Stylesheets/App.scss';
 
 import People from './People';
 import Header from './Header';
+import Travels from './Travels';
 
-const peopleURL = "http://localhost:3000/people";
+const peopleURL = "http://localhost:3000/people/";
+const flightsURL = "http://localhost:3000/flights/";
+const ridesURL = "http://localhost:3000/rides/";
+const shuttlesURL = "http://localhost:3000/shuttles/";
 
 class App extends Component {
   
   state = {
-    people: [],
     person: {},
+    people: [],
+    flights: [],
+    rides: [],
+    shuttles: [],
   }
 
   componentDidMount() {
     fetch( peopleURL )
       .then( response => response.json() )
-      .then( json => this.setState({ people: json.data.sort(aToZ) }) );
+      .then( json => this.setState({ people: extractData(json).sort(aToZ) }) );
+
+    fetch( flightsURL )
+      .then( response => response.json() )
+      .then( json => this.setState({ flights: extractData(json) }) );
+
+    fetch( ridesURL )
+      .then( response => response.json() )
+      .then( json => this.setState({ rides: extractData(json) }) );
+
+    fetch( shuttlesURL )
+      .then( response => response.json() )
+      .then( json => this.setState({ shuttles: extractData(json) }) );
   }
 
   setPerson = (person) => {
-    this.setState({ person });
+    this.setState({ person })
   }
-  
+
+  unSetPerson = () => {
+    this.setState({ person: {} })
+  }
+
   render() {
-    const { people, person } = this.state;
+    const { person, people, flights, rides, shuttles } = this.state;
 
     return (
       <div className="App">
         <Header
-          setPerson={ this.setPerson }
           person={ person }
+          togglePerson={ this.unSetPerson }
         />
-        <People 
-          people={ people }
-          setPerson={ this.setPerson }
-        />
+        {!person.name
+          ? <People
+            people={ people }
+            togglePerson={ this.setPerson }
+          />
+          : <Travels
+            person={ person }
+            flights={ flights }
+            rides={ rides }
+            shuttles={ shuttles }
+          />
+        }
       </div>
     );
   }  
 }
 
+function extractData(fastJson) {
+  return fastJson.data.map(unNest);
+}
+
+function unNest(instance) {
+  return instance.attributes;
+}
+
 function aToZ(a, b) {
-  if (a.attributes.name < b.attributes.name) { return -1 }
-  else if (a.attributes.name > b.attributes.name) { return 1 }
+  if (a.name < b.name) { return -1 }
+  else if (a.name > b.name) { return 1 }
   else { return 0 }
 }
 

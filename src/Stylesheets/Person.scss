@@ -1,5 +1,6 @@
 .person {
-    width: 100%;
+    flex-basis: 17rem;
+    border-bottom: 1px solid firebrick;
 
     div {
         display: flex;
@@ -8,13 +9,13 @@
         margin: 1rem auto;
     }
 
-    h2 {
-        font-size: 3rem;
+    h3 {
+        font-size: 2.3rem;
         font-weight: 500;
     }
 
     img {
-        height: 40%;
+        height: 110px;
         width: 40%;
     }
 }

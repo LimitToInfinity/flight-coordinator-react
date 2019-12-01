@@ -1,0 +1,17 @@
+tbody {
+
+    tr {
+        border-bottom: 1px solid steelblue;
+
+        td {
+            padding: 7px;
+            text-align: center;
+            display: inline-block;
+            width: 5rem;
+
+            img {
+                height: 50px;
+            }
+        }
+    }
+}

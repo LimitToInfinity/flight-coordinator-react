@@ -4,21 +4,24 @@ import './../Stylesheets/People.scss';
 
 import Person from "./Person";
 
-function People({ people, setPerson }) {
+function People({ people, togglePerson }) {
 
     const displayPeople = () => {
         return people.map(person => {
             return <Person
                 key={ person.id }
-                person={ person.attributes }
-                setPerson={ setPerson }
+                person={ person }
+                togglePerson={ togglePerson }
             />
         })
     }
 
     return (
-        <section className="people">
-            { displayPeople() }
+        <section>
+            <h2>Choose yourself!</h2>
+            <div className="people">
+                { displayPeople() }
+            </div>
         </section>
     );
 }

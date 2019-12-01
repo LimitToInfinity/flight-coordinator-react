@@ -2,19 +2,19 @@ import React from "react";
 
 import './../Stylesheets/Person.scss';
 
-function Person({ person, setPerson }) {
+function Person({ person, togglePerson }) {
 
     const handleClick = () => {
-        setPerson(person);
+        togglePerson(person);
     }
 
     const selectedPerson = () => {
         return (
             <div>
-                <h2>{ person.name }</h2>
+                <h3>{ person.name }</h3>
                 <img
-                alt={ person.name }
-                src={ person.image }
+                    alt={ person.name }
+                    src={ person.image }
                 />
             </div>
         );
@@ -23,9 +23,10 @@ function Person({ person, setPerson }) {
     const noPerson = () => {
         return (
             <div>
-                <h2>Choose someone</h2>
+                <h3>Choose someone</h3>
                 <img
-                alt="unknown"
+                    alt="unknown"
+                    src="https://cdn4.iconfinder.com/data/icons/business-vol-4-2/100/Artboard_15-512.png"
                 />
             </div>
         );

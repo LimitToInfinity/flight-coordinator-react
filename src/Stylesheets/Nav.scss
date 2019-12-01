@@ -4,19 +4,20 @@ nav {
     .person {
         display: flex;
         justify-content: flex-end;
-        width: 100%;
+        width: unset;
+        border: none;
 
         div {
             height: 60px;
-            width: 25%;
             margin: 0;
 
-            h2 {
+            h3 {
                 font-size: 1rem;
                 font-weight: 300;
             }
     
             img {
+                margin-left: 1rem;
                 width: 60px;
                 height: 60px;
             }
