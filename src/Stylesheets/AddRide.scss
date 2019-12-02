@@ -1,0 +1,21 @@
+.add-ride {
+    display: flex;
+    flex-direction: column;
+
+    input[type=submit] {
+        align-self: flex-end;
+        width: 30%;
+        border-radius: 10px;
+        cursor: pointer;
+
+        &:hover {
+            outline: none;
+            background-color: hsl(240, 100%, 95%);
+        }
+
+        &:focus {
+            outline: none;
+            background-color: hsl(240, 80%, 90%);
+        }
+    }
+}

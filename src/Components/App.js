@@ -63,8 +63,34 @@ class App extends Component {
     this.setState({ flight: {}, isModal: false });
   }
 
+  updateRide = (modifiedFlight, newRide) => {
+    const { flights, rides } = this.state;
+
+    const updated = updateFlights(flights, modifiedFlight, newRide);
+    const updatedRides = rides.filter(ride => ride.id !== newRide.id);
+
+    this.setState({
+      flights: [...updated.flights, updated.flight],
+      rides: [...updatedRides, newRide]
+    })
+  }
+
+  removeRide = (modifiedFlight, deletedRide) => {
+    const { flights, rides } = this.state;
+
+    const updated = updateFlights(flights, modifiedFlight, null);
+    const updatedRides = rides.filter(ride => ride.id !== deletedRide.id);
+
+    this.setState({ 
+      flights: [...updated.flights, updated.flight], 
+      rides: updatedRides 
+    })
+  }
+
   render() {
-    const { isModal, person, flight, people, flights, rides, shuttles } = this.state;
+    const { isModal, person, flight, people, 
+      flights, rides, shuttles
+    } = this.state;
 
     return (
       <div className="App">
@@ -72,7 +98,10 @@ class App extends Component {
           ? <Modal
             toggleModal={ this.toggleModal }
             toggleFlight={ this.unSetFlight }
+            updateRide={ this.updateRide }
+            removeRide={ this.removeRide }
             flight={ flight }
+            person={ person }
           />
           : null
         }
@@ -97,6 +126,17 @@ class App extends Component {
       </div>
     );
   }  
+}
+
+function updateFlights(flights, modifiedFlight, newRide) {
+  const updatedFlights = flights.filter(flight => flight.id !== modifiedFlight.id);
+  const updatedFlight = flights.find(flight => flight.id === modifiedFlight.id);
+  updatedFlight.ride = newRide;
+
+  return {
+    flights: updatedFlights,
+    flight: updatedFlight,
+  }
 }
 
 function extractData(fastJson) {

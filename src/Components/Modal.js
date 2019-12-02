@@ -2,12 +2,16 @@ import React, { Component } from "react";
 
 import moment from "moment";
 
-import "../Stylesheets/Modal.scss"
+import "../Stylesheets/Modal.scss";
+
+import AddRide from "./AddRide";
+
+const ridesURL = "http://localhost:3000/rides/";
 
 class Modal extends Component {
     
     state = {
-        datetime: moment(new Date()).format().slice(0, 16),
+        datetime: moment(this.props.flight.datetime).format().slice(0, 16),
     }
 
     handleClick = () => {
@@ -21,66 +25,66 @@ class Modal extends Component {
         this.setState({ [name]: value });
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        
+        const { datetime } = this.state;
+        const { person, flight, updateRide } = this.props;
+
+        if (flight.ride) {
+            const rideParams = {
+                ride: {
+                    driver_id: person.id,
+                    shuttle_attributes: {
+                        id: flight.ride.shuttle.id,
+                        datetime,
+                    }
+                }
+            }
+            const patchURL = `${ridesURL}${flight.ride.id}`;
+            const body = JSON.stringify(rideParams);
+
+            fetchCall(patchURL, "PATCH", body)
+                .then(parseJSON)
+                .then(json => updateRide(flight, json.data.attributes));
+
+            this.handleClick();
+        } else if (!flight.ride) {
+            const rideParams = {
+                ride: {
+                    driver_id: person.id,
+                    traveler_id: flight.traveler.id,
+                    flight_id: flight.id,
+                    shuttle_attributes: {
+                        datetime,
+                    }
+                }
+            }
+            const body = JSON.stringify(rideParams);
+
+            fetchCall(ridesURL, "POST", body)
+                .then(parseJSON)
+                .then(json => updateRide(flight, json.data.attributes));
+
+            this.handleClick();
+        }
+    }
+
+    deleteRide = () => {
+        const { flight, removeRide } = this.props;
+        const deleteURL = `${ridesURL}${flight.ride.id}`
+
+        fetchCall(deleteURL, "DELETE");
+
+        removeRide(flight, flight.ride);
+
+        this.handleClick();
+    }
 
     render() {
         const { datetime } = this.state;
 
-        const { flight } = this.props;
-
-        const current = new Date();
-        current.setFullYear(current.getFullYear() + 1)
-        const nowPlusOneYear = moment(current).format();
-        const now = moment(new Date()).format();
-
-        const addPickUp = () => {
-            return (
-                <>
-                    <h2>Pick up { flight.traveler.name }
-                        <img src={ flight.traveler.image } />
-                    </h2>
-                    <p>
-                        { flight.traveler.name } arrives { moment(flight.traveler.datetime).format("ddd MMM DD h:mm a") } at { flight.airport }
-                    </p>
-                    <label htmlFor="datetime">
-                        When will you be at the airport?
-                    </label>
-                    <input
-                        onChange={ this.handleChange }
-                        type="datetime-local"
-                        id="datetime"
-                        name="datetime" 
-                        value={ datetime }
-                        min={ now.slice(0, 16) }
-                        max={ nowPlusOneYear.slice(0, 16) }
-                    />
-                </>
-            );
-        }
-
-        const addDropOff = () => {
-            return (
-                <>
-                    <h2>Drop off { flight.traveler.name }
-                        <img src={ flight.traveler.image } />
-                    </h2>
-                    <p>
-                        { flight.traveler.name } departs { moment(flight.traveler.datetime).format("ddd MMM DD h:mm a") } at { flight.airport }
-                    </p>
-                    <label htmlFor="datetime">
-                        When will you leave for the airport?
-                    </label>
-                    <input
-                        onChange={ this.handleChange }
-                        type="datetime-local"
-                        id="datetime"
-                        name="datetime" 
-                        value={ datetime }
-                        min={ now.slice(0, 16) }
-                        max={ nowPlusOneYear.slice(0, 16) }
-                    />
-                </>
-            );
-        }
+        const { flight, person } = this.props;
 
         return (
             <section className="modal">
@@ -95,14 +99,30 @@ class Modal extends Component {
                         onClick={ this.handleClick }
                     >X
                     </button>
-                    {flight.direction === "arrival"
-                        ? addPickUp()
-                        : addDropOff()
+                    {flight
+                        ? <AddRide
+                            datetime={ datetime }
+                            flight={ flight }
+                            person={ person }
+                            handleChange={ this.handleChange }
+                            handleSubmit={ this.handleSubmit }
+                            deleteRide={ this.deleteRide }
+                        />
+                        : null
                     }
                 </div>
             </section>
         );
     }
+}
+
+function fetchCall(url, method, body) {
+    const headers = { "Content-Type": "application/json" }
+    return fetch(url, { method, headers, body });
+}
+
+function parseJSON(response) {
+    return response.json();
 }
 
 export default Modal;

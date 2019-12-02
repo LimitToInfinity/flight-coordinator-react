@@ -13,15 +13,6 @@ function FlightTableRow({ flight, person, toggleModal, toggleFlight }) {
     const handleClick = () => {
         toggleFlight(flight);
         toggleModal();
-        // if (flight.ride) {
-        //     window.confirm(`Do you want to pick up ${flight.traveler.name} instead?`)
-        //         ? console.log("ride id", flight.ride.id, "person", person.id)
-        //         : console.log("no")
-        // } else if (!flight.ride) {    
-        //     window.confirm(`Do you want to pick up ${flight.traveler.name}?`)
-        //         ? console.log("ride id", flight.ride, "person", person.id, "flight id", flight.id, "traveler id", flight.traveler.id)
-        //         : console.log("no")
-        // }
     }
 
     return (

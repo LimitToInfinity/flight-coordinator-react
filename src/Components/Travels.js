@@ -13,13 +13,13 @@ function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }
     return (
         <section className="travels">
             <Arrivals
-                arrivals={ arrivals() }
+                arrivals={ arrivals().sort(byDate) }
                 person={ person }
                 toggleFlight={ toggleFlight }
                 toggleModal={ toggleModal }
             />
             <Departures
-                departures={ departures() }
+                departures={ departures().sort(byDate) }
                 person={ person }
                 toggleFlight={ toggleFlight }
                 toggleModal={ toggleModal }
@@ -27,6 +27,12 @@ function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }
 
         </section>
     );
+}
+
+function byDate(a, b) {
+    if (a.datetime > b.datetime) { return -1; }
+    else if (a.datetime < b.datetime) { return 1; }
+    else { return 0; }
 }
 
 export default Travels;
