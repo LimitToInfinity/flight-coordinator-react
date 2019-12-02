@@ -1,4 +1,9 @@
 tbody {
+    cursor: pointer;
+
+    &:hover {
+        background-color: hsl(0, 0%, 90%);
+    }
 
     tr {
         border-bottom: 1px solid steelblue;
@@ -12,6 +17,14 @@ tbody {
             img {
                 height: 50px;
             }
+        }
+
+        .has {
+            color: green;
+        }
+
+        .needs {
+            color: red;
         }
     }
 }

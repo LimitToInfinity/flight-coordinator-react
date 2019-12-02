@@ -5,6 +5,7 @@ import './../Stylesheets/App.scss';
 import People from './People';
 import Header from './Header';
 import Travels from './Travels';
+import Modal from './Modal';
 
 const peopleURL = "http://localhost:3000/people/";
 const flightsURL = "http://localhost:3000/flights/";
@@ -14,7 +15,9 @@ const shuttlesURL = "http://localhost:3000/shuttles/";
 class App extends Component {
   
   state = {
+    isModal: false,
     person: {},
+    flight: {},
     people: [],
     flights: [],
     rides: [],
@@ -39,19 +42,40 @@ class App extends Component {
       .then( json => this.setState({ shuttles: extractData(json) }) );
   }
 
+  toggleModal = () => {
+    const { isModal } = this.state;
+    this.setState({ isModal: !isModal });
+  }
+
   setPerson = (person) => {
-    this.setState({ person })
+    this.setState({ person });
   }
 
   unSetPerson = () => {
-    this.setState({ person: {} })
+    this.setState({ person: {}, isModal: false });
+  }
+
+  setFlight = (flight) => {
+    this.setState({ flight });
+  }
+
+  unSetFlight = () => {
+    this.setState({ flight: {}, isModal: false });
   }
 
   render() {
-    const { person, people, flights, rides, shuttles } = this.state;
+    const { isModal, person, flight, people, flights, rides, shuttles } = this.state;
 
     return (
       <div className="App">
+        {isModal
+          ? <Modal
+            toggleModal={ this.toggleModal }
+            toggleFlight={ this.unSetFlight }
+            flight={ flight }
+          />
+          : null
+        }
         <Header
           person={ person }
           togglePerson={ this.unSetPerson }
@@ -62,6 +86,8 @@ class App extends Component {
             togglePerson={ this.setPerson }
           />
           : <Travels
+            toggleModal={ this.toggleModal }
+            toggleFlight={ this.setFlight }
             person={ person }
             flights={ flights }
             rides={ rides }

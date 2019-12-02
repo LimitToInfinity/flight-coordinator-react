@@ -5,7 +5,7 @@ import './../Stylesheets/Travels.scss';
 import Arrivals from "./Arrivals";
 import Departures from "./Departures";
 
-function Travels({ person, flights, rides, shuttles }) {
+function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }) {
 
     const arrivals = () => flights.filter(flight => flight.direction === "arrival");
     const departures = () => flights.filter(flight => flight.direction === "departure");
@@ -14,9 +14,15 @@ function Travels({ person, flights, rides, shuttles }) {
         <section className="travels">
             <Arrivals
                 arrivals={ arrivals() }
+                person={ person }
+                toggleFlight={ toggleFlight }
+                toggleModal={ toggleModal }
             />
             <Departures
                 departures={ departures() }
+                person={ person }
+                toggleFlight={ toggleFlight }
+                toggleModal={ toggleModal }
             />
 
         </section>

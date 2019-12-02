@@ -2,7 +2,7 @@ import React from "react";
 
 import './../Stylesheets/FlightTableHeader.scss';
 
-function FlightTableHeader() {
+function FlightTableHeader({ ride }) {
 
     return (
         <thead>
