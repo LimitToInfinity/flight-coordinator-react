@@ -5,13 +5,15 @@ import moment from "moment";
 import "../Stylesheets/Modal.scss";
 
 import AddRide from "./AddRide";
+import AddFlight from "./AddFlight";
 
 const ridesURL = "http://localhost:3000/rides/";
 
 class Modal extends Component {
     
     state = {
-        datetime: moment(this.props.flight.datetime).format().slice(0, 16),
+        datetime: moment(this.props.flight.datetime).format().slice(0, 16) || 
+            moment(new Date()).format().slice(0, 16),
     }
 
     handleClick = () => {
@@ -99,7 +101,7 @@ class Modal extends Component {
                         onClick={ this.handleClick }
                     >X
                     </button>
-                    {flight
+                    {flight.id
                         ? <AddRide
                             datetime={ datetime }
                             flight={ flight }
@@ -108,7 +110,11 @@ class Modal extends Component {
                             handleSubmit={ this.handleSubmit }
                             deleteRide={ this.deleteRide }
                         />
-                        : null
+                        : <AddFlight
+                            datetime={ datetime }
+                            person={ person }
+                            handleChange={ this.handleChange }
+                        />
                     }
                 </div>
             </section>

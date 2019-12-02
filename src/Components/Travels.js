@@ -12,6 +12,10 @@ function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }
 
     return (
         <section className="travels">
+            <button 
+                onClick={ toggleModal }
+                className="add-flight"
+            >Add flight</button>
             <Arrivals
                 arrivals={ arrivals().sort(byDate) }
                 person={ person }
