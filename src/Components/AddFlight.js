@@ -1,10 +1,12 @@
 import React from "react";
 
 import moment from "moment";
+import Datetime from "react-datetime";
 
 import "./../Stylesheets/AddFlight.scss";
 
-function AddFlight({ datetime, handleChange, handleSubmit }) {
+function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
+
 
     const current = new Date();
     current.setFullYear(current.getFullYear() + 1);
@@ -26,6 +28,7 @@ function AddFlight({ datetime, handleChange, handleSubmit }) {
                     min={ now.slice(0, 16) }
                     max={ nowPlusOneYear.slice(0, 16) }
                 />
+                <Datetime onChange={ handleDate } />
                 <select
                     onChange={ handleChange }
                     id="direction"

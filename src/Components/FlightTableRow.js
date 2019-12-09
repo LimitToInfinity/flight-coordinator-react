@@ -4,7 +4,7 @@ import moment from "moment";
 
 import './../Stylesheets/FlightTableRow.scss';
 
-function FlightTableRow({ flight, person, toggleModal, toggleFlight }) {
+function FlightTableRow({ flight, toggleModal, toggleFlight }) {
 
     const day = moment(flight.datetime).format("ddd");
     const date = moment(flight.datetime).format("MMM DD");
@@ -16,7 +16,7 @@ function FlightTableRow({ flight, person, toggleModal, toggleFlight }) {
     }
 
     return (
-        <tbody onClick={ handleClick }>
+        <tbody  className="tbody" onClick={ handleClick }>
             <tr>
                 <td>
                     <img 

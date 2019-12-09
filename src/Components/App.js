@@ -63,6 +63,11 @@ class App extends Component {
     this.setState({ flight: {}, isModal: false });
   }
 
+  addFlight = (flight) => {
+    const { flights } = this.state;
+    this.setState({ flights: [...flights, flight] });
+  }
+
   updateRide = (modifiedFlight, newRide) => {
     const { flights, rides } = this.state;
 
@@ -88,8 +93,8 @@ class App extends Component {
   }
 
   render() {
-    const { isModal, person, flight, people, 
-      flights, rides, shuttles
+    const { isModal, person, flight,
+      people, flights
     } = this.state;
 
     return (
@@ -98,6 +103,7 @@ class App extends Component {
           ? <Modal
             toggleModal={ this.toggleModal }
             toggleFlight={ this.unSetFlight }
+            addFlight={ this.addFlight }
             updateRide={ this.updateRide }
             removeRide={ this.removeRide }
             flight={ flight }
@@ -116,12 +122,9 @@ class App extends Component {
               togglePerson={ this.setPerson }
             />
             : <Travels
+              allFlights={ flights }
               toggleModal={ this.toggleModal }
               toggleFlight={ this.setFlight }
-              person={ person }
-              flights={ flights }
-              rides={ rides }
-              shuttles={ shuttles }
             />
           }
         </main>

@@ -4,7 +4,7 @@ import './../Stylesheets/Departures.scss';
 import FlightTableHeader from "./FlightTableHeader";
 import FlightTableRow from "./FlightTableRow";
 
-function Departures({ departures, person, toggleModal, toggleFlight }) {
+function Departures({ departures, toggleModal, toggleFlight }) {
 
     const displayFlightRows = () => {
         return departures.map(departure => {
@@ -12,7 +12,6 @@ function Departures({ departures, person, toggleModal, toggleFlight }) {
                 <FlightTableRow
                     key={ departure.id }
                     flight={ departure }
-                    person={ person }
                     toggleModal={ toggleModal }
                     toggleFlight={ toggleFlight }
                 />

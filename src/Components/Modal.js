@@ -27,6 +27,11 @@ class Modal extends Component {
         toggleModal();
     }
 
+    handleDate = (date) => {
+        const datetime = moment(date._d).format().slice(0, 16);
+        this.setState({ datetime });
+    }
+
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
@@ -36,10 +41,10 @@ class Modal extends Component {
         event.preventDefault();
         
         const { datetime } = this.state;
-        const { person, flight, updateRide } = this.props;
+        const { person, flight, addFlight, updateRide } = this.props;
 
         if (!flight.id) {
-            createFlight(person, this.state);
+            createFlight(person, this.state, addFlight);
         }
         else if (flight.ride) {
             updateCurrentRide(person, flight, datetime, updateRide);
@@ -95,6 +100,7 @@ class Modal extends Component {
                             airport={ airport }
                             airline={ airline }
                             flightNumber={ flightNumber }
+                            handleDate={ this.handleDate }
                             handleChange={ this.handleChange }
                             handleSubmit={ this.handleSubmit }
                         />
@@ -105,9 +111,9 @@ class Modal extends Component {
     }
 }
 
-function createFlight(person, state) {
-    const { direction, airport, airline, flightNumber,
-        datetime
+function createFlight(person, state, addFlight) {
+    const { direction, airport, airline,
+        flightNumber, datetime
     } = state;
 
     const flightParams = {
@@ -122,7 +128,8 @@ function createFlight(person, state) {
 
     fetchCall(flightsURL, "POST", body)
         .then(parseJSON)
-        .then(json => console.log("json", json));
+        .then(flight => addFlight(flight.data.attributes))
+        .catch(error => console.error(error));
 }
 
 function updateCurrentRide(person, flight, datetime, updateRide) {
@@ -140,7 +147,7 @@ function updateCurrentRide(person, flight, datetime, updateRide) {
 
     fetchCall(patchURL, "PATCH", body)
         .then(parseJSON)
-        .then(json => updateRide(flight, json.data.attributes))
+        .then(ride => updateRide(flight, ride.data.attributes))
         .catch(error => console.error(error));
 }
 
@@ -159,7 +166,7 @@ function createRide(person, flight, datetime, updateRide) {
 
     fetchCall(ridesURL, "POST", body)
         .then(parseJSON)
-        .then(json => updateRide(flight, json.data.attributes))
+        .then(ride => updateRide(flight, ride.data.attributes))
         .catch(error => console.error(error));
 }
 

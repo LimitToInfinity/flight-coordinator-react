@@ -1,11 +1,21 @@
 import React from "react";
 
+import moment from "moment";
+
 import './../Stylesheets/Travels.scss';
 
 import Arrivals from "./Arrivals";
 import Departures from "./Departures";
 
-function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }) {
+function Travels({ toggleModal, toggleFlight, allFlights }) {
+
+    const current = moment(new Date()).format();
+
+    console.log(current);
+
+    const flights = allFlights.filter(flight => {
+        return current < moment(flight.datetime).format();
+    }).sort(byDate);
 
     const arrivals = () => flights.filter(flight => flight.direction === "arrival");
     const departures = () => flights.filter(flight => flight.direction === "departure");
@@ -17,14 +27,12 @@ function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }
                 className="add-flight"
             >Add flight</button>
             <Arrivals
-                arrivals={ arrivals().sort(byDate) }
-                person={ person }
+                arrivals={ arrivals() }
                 toggleFlight={ toggleFlight }
                 toggleModal={ toggleModal }
             />
             <Departures
-                departures={ departures().sort(byDate) }
-                person={ person }
+                departures={ departures() }
                 toggleFlight={ toggleFlight }
                 toggleModal={ toggleModal }
             />
@@ -34,8 +42,8 @@ function Travels({ toggleModal, toggleFlight, person, flights, rides, shuttles }
 }
 
 function byDate(a, b) {
-    if (a.datetime > b.datetime) { return -1; }
-    else if (a.datetime < b.datetime) { return 1; }
+    if (a.datetime < b.datetime) { return -1; }
+    else if (a.datetime > b.datetime) { return 1; }
     else { return 0; }
 }
 

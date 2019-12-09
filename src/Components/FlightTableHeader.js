@@ -5,7 +5,7 @@ import './../Stylesheets/FlightTableHeader.scss';
 function FlightTableHeader({ ride }) {
 
     return (
-        <thead>
+        <thead className="thead">
             <tr>
                 <th></th>
                 <th>Name</th>

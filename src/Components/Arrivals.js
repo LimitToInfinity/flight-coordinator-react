@@ -4,7 +4,7 @@ import './../Stylesheets/Arrivals.scss';
 import FlightTableHeader from "./FlightTableHeader";
 import FlightTableRow from "./FlightTableRow";
 
-function Arrivals({ arrivals, person, toggleModal, toggleFlight }) {
+function Arrivals({ arrivals, toggleModal, toggleFlight }) {
 
     const displayFlightRows = () => {
         return arrivals.map(arrival => {
@@ -12,7 +12,6 @@ function Arrivals({ arrivals, person, toggleModal, toggleFlight }) {
                 <FlightTableRow
                     key={ arrival.id }
                     flight={ arrival }
-                    person={ person }
                     toggleModal={ toggleModal }
                     toggleFlight={ toggleFlight }
                 />
