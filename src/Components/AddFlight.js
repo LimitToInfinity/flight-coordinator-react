@@ -4,14 +4,17 @@ import moment from "moment";
 import Datetime from "react-datetime";
 
 import "./../Stylesheets/AddFlight.scss";
+import './../Stylesheets/Datetime.scss';
 
 function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
 
-
-    const current = new Date();
-    current.setFullYear(current.getFullYear() + 1);
-    const nowPlusOneYear = moment(current).format();
-    const now = moment(new Date()).format();
+    const yesterday = Datetime.moment().subtract(1, 'day');
+    const oneYearFromNow = Datetime.moment().add(1, 'year');
+    const isValid = (current) => {
+        return current.isAfter(yesterday)
+            && current.isBefore(oneYearFromNow);
+    };
+    const inputProps = { id: "datetime", name: "datetime" };
 
     return (
         <>
@@ -19,16 +22,12 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
                 <label htmlFor="datetime">
                     When is your flight?
                 </label>
-                <input
-                    onChange={ handleChange }
-                    type="datetime-local"
-                    id="datetime"
-                    name="datetime" 
-                    value={ datetime }
-                    min={ now.slice(0, 16) }
-                    max={ nowPlusOneYear.slice(0, 16) }
+                <Datetime 
+                    onChange={ handleDate }
+                    defaultValue={ moment(datetime) }
+                    isValidDate={ isValid }
+                    inputProps={ inputProps }
                 />
-                <Datetime onChange={ handleDate } />
                 <select
                     onChange={ handleChange }
                     id="direction"
@@ -71,7 +70,9 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
                     name="flightNumber" 
                     placeholder="enter flight #"
                 />
-                <input type="submit" />
+                <div className="form-buttons">
+                    <input type="submit" />
+                </div>
             </form>
         </>
     );

@@ -11,10 +11,8 @@ function Travels({ toggleModal, toggleFlight, allFlights }) {
 
     const current = moment(new Date()).format();
 
-    console.log(current);
-
     const flights = allFlights.filter(flight => {
-        return current < moment(flight.datetime).format();
+        return moment(flight.datetime).format() > current;
     }).sort(byDate);
 
     const arrivals = () => flights.filter(flight => flight.direction === "arrival");

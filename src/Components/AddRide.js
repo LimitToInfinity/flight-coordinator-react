@@ -1,19 +1,23 @@
 import React from "react";
 
 import moment from "moment";
+import Datetime from "react-datetime";
 
 import "./../Stylesheets/AddRide.scss";
 
 function AddRide(props) {
 
-    const { datetime, handleChange, handleSubmit, 
+    const { datetime, handleDate, handleSubmit, 
         deleteRide, flight, person
     } = props;
 
-    const current = new Date();
-    current.setFullYear(current.getFullYear() + 1);
-    const nowPlusOneYear = moment(current).format();
-    const now = moment(new Date()).format();
+    const yesterday = Datetime.moment().subtract(1, 'day');
+    const oneYearFromNow = Datetime.moment().add(1, 'year');
+    const isValid = (current) => {
+        return current.isAfter(yesterday)
+            && current.isBefore(oneYearFromNow);
+    };
+    const inputProps = { id: "datetime", name: "datetime" };
 
     const verbage = {
         arrival: {
@@ -52,18 +56,20 @@ function AddRide(props) {
                 <label htmlFor="datetime">
                     When { verbage[flight.direction].label } you be at the airport?
                 </label>
-                <input
-                    onChange={ handleChange }
-                    type="datetime-local"
-                    id="datetime"
-                    name="datetime" 
-                    value={ datetime }
-                    min={ now.slice(0, 16) }
-                    max={ nowPlusOneYear.slice(0, 16) }
+                <Datetime 
+                    onChange={ handleDate }
+                    defaultValue={flight.direction === "arrival"
+                        ? moment(datetime)
+                        : moment(datetime).subtract(105, 'minutes')
+                    }
+                    isValidDate={ isValid }
+                    inputProps={ inputProps }
                 />
-                <input type="submit" />
+                <div className="form-buttons">
+                    <input type="submit" />
+                    { checkIfRide() }
+                </div>
             </form>
-            { checkIfRide() }
         </>
     );
 }

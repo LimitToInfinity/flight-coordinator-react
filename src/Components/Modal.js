@@ -13,8 +13,8 @@ const ridesURL = "http://localhost:3000/rides/";
 class Modal extends Component {
     
     state = {
-        datetime: moment(this.props.flight.datetime).format().slice(0, 16) || 
-            moment(new Date()).format().slice(0, 16),
+        datetime: moment(this.props.flight.datetime) || 
+            moment(new Date()),
         direction: "",
         airport: "",
         airline: "",
@@ -28,7 +28,7 @@ class Modal extends Component {
     }
 
     handleDate = (date) => {
-        const datetime = moment(date._d).format().slice(0, 16);
+        const datetime = moment(date._d).format();
         this.setState({ datetime });
     }
 
@@ -89,7 +89,7 @@ class Modal extends Component {
                             person={ person }
                             flight={ flight }
                             datetime={ datetime }
-                            handleChange={ this.handleChange }
+                            handleDate={ this.handleDate }
                             handleSubmit={ this.handleSubmit }
                             deleteRide={ this.deleteRide }
                         />
