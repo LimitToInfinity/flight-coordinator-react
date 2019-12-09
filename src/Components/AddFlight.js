@@ -66,7 +66,7 @@ function AddFlight({ datetime, handleChange, handleSubmit }) {
                     type="text"
                     id="flightNumber"
                     name="flightNumber" 
-                    placeholder="enter your flight number"
+                    placeholder="enter flight #"
                 />
                 <input type="submit" />
             </form>

@@ -109,20 +109,22 @@ class App extends Component {
           person={ person }
           togglePerson={ this.unSetPerson }
         />
-        {!person.name
-          ? <People
-            people={ people }
-            togglePerson={ this.setPerson }
-          />
-          : <Travels
-            toggleModal={ this.toggleModal }
-            toggleFlight={ this.setFlight }
-            person={ person }
-            flights={ flights }
-            rides={ rides }
-            shuttles={ shuttles }
-          />
-        }
+        <main>
+          {!person.name
+            ? <People
+              people={ people }
+              togglePerson={ this.setPerson }
+            />
+            : <Travels
+              toggleModal={ this.toggleModal }
+              toggleFlight={ this.setFlight }
+              person={ person }
+              flights={ flights }
+              rides={ rides }
+              shuttles={ shuttles }
+            />
+          }
+        </main>
       </div>
     );
   }  
