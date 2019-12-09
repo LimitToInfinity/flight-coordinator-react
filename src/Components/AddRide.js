@@ -11,7 +11,7 @@ function AddRide(props) {
     } = props;
 
     const current = new Date();
-    current.setFullYear(current.getFullYear() + 1)
+    current.setFullYear(current.getFullYear() + 1);
     const nowPlusOneYear = moment(current).format();
     const now = moment(new Date()).format();
 
@@ -31,7 +31,7 @@ function AddRide(props) {
     const checkIfRide = () => {
         if (flight.ride) {
             if (person.id === flight.ride.driver.id) {
-                return <button onClick={ deleteRide }>Remove Driver</button>;
+                return <button className="delete-ride" onClick={ deleteRide }>Remove ride</button>;
             } else {
                 return null;
             }

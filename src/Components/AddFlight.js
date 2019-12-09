@@ -4,37 +4,16 @@ import moment from "moment";
 
 import "./../Stylesheets/AddFlight.scss";
 
-function AddFlight(props) {
-
-    const { datetime, person, handleChange } = props;
+function AddFlight({ datetime, handleChange, handleSubmit }) {
 
     const current = new Date();
-    current.setFullYear(current.getFullYear() + 1)
+    current.setFullYear(current.getFullYear() + 1);
     const nowPlusOneYear = moment(current).format();
     const now = moment(new Date()).format();
 
-    const verbage = {
-        arrival: {
-            h2: "Pick up",
-            p: "arrives",
-            label: "will",
-        },
-        departure: {
-            h2: "Drop off",
-            p: "departs",
-            label: "should",
-        }
-    }
-
     return (
         <>
-            {/* <h2>{ verbage[flight.direction].h2 } { flight.traveler.name }
-                <img alt={ flight.traveler.name } src={ flight.traveler.image } />
-            </h2>
-            <p>
-                { flight.traveler.name } { verbage[flight.direction].p } { moment(flight.datetime).format("ddd MM/DD/YYYY h:mm a") } at { flight.airport }
-            </p> */}
-            <form className="add-ride">
+            <form onSubmit={ handleSubmit } className="add-ride">
                 <label htmlFor="datetime">
                     When is your flight?
                 </label>
@@ -46,6 +25,48 @@ function AddFlight(props) {
                     value={ datetime }
                     min={ now.slice(0, 16) }
                     max={ nowPlusOneYear.slice(0, 16) }
+                />
+                <select
+                    onChange={ handleChange }
+                    id="direction"
+                    name="direction" 
+                >
+                    <option value="">Arrival or Departure?</option>
+                    <option value="arrival">Arrival</option>
+                    <option value="departure">Departure</option>
+                </select>
+                <select
+                    onChange={ handleChange }
+                    id="airline"
+                    name="airline" 
+                >
+                    <option value="">Which airline?</option>
+                    <option value="American">American</option>
+                    <option value="Delta">Delta</option>
+                    <option value="Frontier">Frontier</option>
+                    <option value="JetBlue">JetBlue</option>
+                    <option value="Southwest">Southwest</option>
+                    <option value="Spirit">Spirit</option>
+                    <option value="United">United</option>
+                </select>
+                <select
+                    onChange={ handleChange }
+                    id="airport"
+                    name="airport" 
+                >
+                    <option value="">Which airport?</option>
+                    <option value="Bush (IAH)">Bush (IAH)</option>
+                    <option value="Hobby (HOU)">Hobby (HOU)</option>
+                </select>
+                <label htmlFor="flightNumber">
+                    Flight number?
+                </label>
+                <input
+                    onChange={ handleChange }
+                    type="text"
+                    id="flightNumber"
+                    name="flightNumber" 
+                    placeholder="enter your flight number"
                 />
                 <input type="submit" />
             </form>
