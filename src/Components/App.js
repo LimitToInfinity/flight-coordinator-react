@@ -2,160 +2,76 @@ import React, { Component } from 'react';
 
 import './../Stylesheets/App.scss';
 
-import People from './People';
-import Header from './Header';
-import Travels from './Travels';
-import Modal from './Modal';
+import Authorized from './Authorized';
 
-const peopleURL = "http://localhost:3000/people/";
-const flightsURL = "http://localhost:3000/flights/";
-const ridesURL = "http://localhost:3000/rides/";
-const shuttlesURL = "http://localhost:3000/shuttles/";
+const loginURL = "http://localhost:3000/login/";
 
 class App extends Component {
-  
+
   state = {
-    isModal: false,
-    person: {},
-    flight: {},
-    people: [],
-    flights: [],
-    rides: [],
-    shuttles: [],
+    username: "",
+    password: "",
   }
 
-  componentDidMount() {
-    fetch( peopleURL )
-      .then( response => response.json() )
-      .then( json => this.setState({ people: extractData(json).sort(aToZ) }) );
+  handleChange = (event) => {
+    const { name, value } = event.target;
 
-    fetch( flightsURL )
-      .then( response => response.json() )
-      .then( json => this.setState({ flights: extractData(json) }) );
-
-    fetch( ridesURL )
-      .then( response => response.json() )
-      .then( json => this.setState({ rides: extractData(json) }) );
-
-    fetch( shuttlesURL )
-      .then( response => response.json() )
-      .then( json => this.setState({ shuttles: extractData(json) }) );
+    this.setState({ [name]: value });
   }
 
-  toggleModal = () => {
-    const { isModal } = this.state;
-    this.setState({ isModal: !isModal });
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const { username, password } = this.state;
+
+    const userBody = JSON.stringify({ username, password });
+
+    fetchCall(loginURL, "POST", userBody)
+      .then(response => response.json())
+      .then(data => localStorage.setItem( "token", data.token ))
+      .catch(error => console.error(error));
   }
-
-  setPerson = (person) => {
-    this.setState({ person });
-  }
-
-  unSetPerson = () => {
-    this.setState({ person: {}, isModal: false });
-  }
-
-  setFlight = (flight) => {
-    this.setState({ flight });
-  }
-
-  unSetFlight = () => {
-    this.setState({ flight: {}, isModal: false });
-  }
-
-  addFlight = (flight) => {
-    const { flights } = this.state;
-    this.setState({ flights: [...flights, flight] });
-  }
-
-  updateRide = (modifiedFlight, newRide) => {
-    const { flights, rides } = this.state;
-
-    const updated = updateFlights(flights, modifiedFlight, newRide);
-    const updatedRides = rides.filter(ride => ride.id !== newRide.id);
-
-    this.setState({
-      flights: [...updated.flights, updated.flight],
-      rides: [...updatedRides, newRide]
-    })
-  }
-
-  removeRide = (modifiedFlight, deletedRide) => {
-    const { flights, rides } = this.state;
-
-    const updated = updateFlights(flights, modifiedFlight, null);
-    const updatedRides = rides.filter(ride => ride.id !== deletedRide.id);
-
-    this.setState({ 
-      flights: [...updated.flights, updated.flight], 
-      rides: updatedRides 
-    })
-  }
-
+  
   render() {
-    const { isModal, person, flight,
-      people, flights
-    } = this.state;
 
     return (
       <div className="App">
-        {isModal
-          ? <Modal
-            toggleModal={ this.toggleModal }
-            toggleFlight={ this.unSetFlight }
-            addFlight={ this.addFlight }
-            updateRide={ this.updateRide }
-            removeRide={ this.removeRide }
-            flight={ flight }
-            person={ person }
-          />
-          : null
+        {localStorage.getItem("token")
+          ? <Authorized />
+          : (<form onSubmit={ this.handleSubmit }>
+             <label htmlFor="username">
+              Username
+            </label>
+            <input
+              onChange={ this.handleChange }
+              type="text"
+              id="username"
+              name="username" 
+              placeholder="username"
+            />
+
+            <label htmlFor="password">
+              Password
+            </label>
+            <input 
+              onChange={ this.handleChange }
+              type="password"
+              id="password"
+              name="password" 
+              placeholder="password"
+            />
+
+            <input type="submit" />
+          </form>)
         }
-        <Header
-          person={ person }
-          togglePerson={ this.unSetPerson }
-        />
-        <main>
-          {!person.name
-            ? <People
-              people={ people }
-              togglePerson={ this.setPerson }
-            />
-            : <Travels
-              allFlights={ flights }
-              toggleModal={ this.toggleModal }
-              toggleFlight={ this.setFlight }
-            />
-          }
-        </main>
       </div>
     );
-  }  
-}
-
-function updateFlights(flights, modifiedFlight, newRide) {
-  const updatedFlights = flights.filter(flight => flight.id !== modifiedFlight.id);
-  const updatedFlight = flights.find(flight => flight.id === modifiedFlight.id);
-  updatedFlight.ride = newRide;
-
-  return {
-    flights: updatedFlights,
-    flight: updatedFlight,
   }
 }
 
-function extractData(fastJson) {
-  return fastJson.data.map(unNest);
-}
-
-function unNest(instance) {
-  return instance.attributes;
-}
-
-function aToZ(a, b) {
-  if (a.name < b.name) { return -1 }
-  else if (a.name > b.name) { return 1 }
-  else { return 0 }
+function fetchCall(url, method, body){
+  const headers = { "Content-Type": "application/json" };
+  return fetch( url, { method, headers, body });
 }
 
 export default App;
