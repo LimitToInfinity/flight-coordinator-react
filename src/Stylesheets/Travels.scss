@@ -8,9 +8,10 @@
         font-size: 1.8rem;
         color: midnightblue;
         border: lightskyblue solid 1px;
-        margin-top: 0.5rem;
-        padding: 0.5rem 1rem;
         border-radius: 5px;
+        background-color: inherit;
+        margin: 0.5rem 0 1.5rem;
+        padding: 0.5rem 1rem;
         cursor: pointer;
 
         &:hover {
