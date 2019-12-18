@@ -36,7 +36,7 @@ function FlightTableRow({ flight, toggleModal, toggleFlight }) {
                 >
                     {flight.ride
                         ? flight.ride.driver.name
-                        : "None"
+                        : "Click to give ride"
                     }
                 </td>
             </tr>
