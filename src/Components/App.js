@@ -5,7 +5,7 @@ import './../Stylesheets/App.scss';
 import Authorized from './Authorized';
 import Login from './Login';
 
-const shuttlesURL = "http://localhost:3000/shuttles/";
+const shuttlesURL = "https://cousintrackerback.herokuapp.com/shuttles/";
 
 class App extends Component {
 

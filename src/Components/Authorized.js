@@ -7,10 +7,10 @@ import Header from './Header';
 import Travels from './Travels';
 import Modal from './Modal';
 
-const peopleURL = "http://localhost:3000/people/";
-const flightsURL = "http://localhost:3000/flights/";
-const ridesURL = "http://localhost:3000/rides/";
-const shuttlesURL = "http://localhost:3000/shuttles/";
+const peopleURL = "https://cousintrackerback.herokuapp.com/people/";
+const flightsURL = "https://cousintrackerback.herokuapp.com/flights/";
+const ridesURL = "https://cousintrackerback.herokuapp.com/rides/";
+const shuttlesURL = "https://cousintrackerback.herokuapp.com/shuttles/";
 
 class Authorized extends Component {
   

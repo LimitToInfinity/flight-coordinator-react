@@ -4,7 +4,7 @@ import './../Stylesheets/Login.scss';
 
 import { TextField, Button } from '@material-ui/core';
 
-const loginURL = "http://localhost:3000/login/";
+const loginURL = "https://cousintrackerback.herokuapp.com/login/";
 
 class Login extends Component {
 

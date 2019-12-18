@@ -7,8 +7,8 @@ import "../Stylesheets/Modal.scss";
 import AddRide from "./AddRide";
 import AddFlight from "./AddFlight";
 
-const flightsURL = "http://localhost:3000/flights/";
-const ridesURL = "http://localhost:3000/rides/";
+const flightsURL = "https://cousintrackerback.herokuapp.com/flights/";
+const ridesURL = "https://cousintrackerback.herokuapp.com/rides/";
 
 class Modal extends Component {
     
