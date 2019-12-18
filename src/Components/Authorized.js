@@ -23,22 +23,22 @@ class Authorized extends Component {
     rides: [],
     shuttles: [],
   }
-
+  
   componentDidMount() {
-    fetch( peopleURL )
-      .then( response => response.json() )
+    fetchCall( peopleURL )
+      .then( parseJSON )
       .then( json => this.setState({ people: extractData(json).sort(aToZ) }) );
 
-    fetch( flightsURL )
-      .then( response => response.json() )
+    fetchCall( flightsURL )
+      .then( parseJSON )
       .then( json => this.setState({ flights: extractData(json) }) );
 
-    fetch( ridesURL )
-      .then( response => response.json() )
+    fetchCall( ridesURL )
+      .then( parseJSON )
       .then( json => this.setState({ rides: extractData(json) }) );
 
-    fetch( shuttlesURL )
-      .then( response => response.json() )
+    fetchCall( shuttlesURL )
+      .then( parseJSON )
       .then( json => this.setState({ shuttles: extractData(json) }) );
   }
 
@@ -156,6 +156,16 @@ function aToZ(a, b) {
   if (a.name < b.name) { return -1 }
   else if (a.name > b.name) { return 1 }
   else { return 0 }
+}
+
+function fetchCall(url) {
+  const token = localStorage.getItem("token");
+  const headers = { Authorization: "Bearer " + token };
+  return fetch(url, { headers })
+}
+
+function parseJSON(response) {
+  return response.json();
 }
 
 export default Authorized;

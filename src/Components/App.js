@@ -3,75 +3,54 @@ import React, { Component } from 'react';
 import './../Stylesheets/App.scss';
 
 import Authorized from './Authorized';
+import Login from './Login';
 
-const loginURL = "http://localhost:3000/login/";
+const shuttlesURL = "http://localhost:3000/shuttles/";
 
 class App extends Component {
 
   state = {
-    username: "",
-    password: "",
+    token: "",
+    status: false,
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-
-    this.setState({ [name]: value });
+  checkTokenValidity = () => {
+    fetchCall( shuttlesURL )
+      .then( response => this.handleToken(response.status) );
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
+  handleToken = (status) => {
+    status === 500
+      ? localStorage.removeItem( "token" )
+      : this.setState({ status: true });
+  }
 
-    const { username, password } = this.state;
+  componentDidMount() {
+    this.checkTokenValidity();
+  }
 
-    const userBody = JSON.stringify({ username, password });
-
-    fetchCall(loginURL, "POST", userBody)
-      .then(response => response.json())
-      .then(data => localStorage.setItem( "token", data.token ))
-      .catch(error => console.error(error));
+  setToken = (token) => {
+    this.setState({ token });
   }
   
   render() {
+    const { token, status } = this.state;
 
     return (
-      <div className="App">
-        {localStorage.getItem("token")
+      <div className={token || status ? "App" : "App gradient"}>
+        {token || status
           ? <Authorized />
-          : (<form onSubmit={ this.handleSubmit }>
-             <label htmlFor="username">
-              Username
-            </label>
-            <input
-              onChange={ this.handleChange }
-              type="text"
-              id="username"
-              name="username" 
-              placeholder="username"
-            />
-
-            <label htmlFor="password">
-              Password
-            </label>
-            <input 
-              onChange={ this.handleChange }
-              type="password"
-              id="password"
-              name="password" 
-              placeholder="password"
-            />
-
-            <input type="submit" />
-          </form>)
+          : <Login setToken={ this.setToken } />
         }
       </div>
     );
   }
 }
 
-function fetchCall(url, method, body){
-  const headers = { "Content-Type": "application/json" };
-  return fetch( url, { method, headers, body });
+function fetchCall(url) {
+  const token = localStorage.getItem("token");
+  const headers = { Authorization: "Bearer " + token };
+  return fetch(url, { headers })
 }
 
 export default App;

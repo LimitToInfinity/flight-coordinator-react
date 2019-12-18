@@ -24,7 +24,7 @@ function Person({ person, togglePerson }) {
     const noPerson = () => {
         return (
             <>
-                <h3>Choose someone</h3>
+                <h3>Choose yourself</h3>
                 <img
                     alt="unknown"
                     src="https://cdn4.iconfinder.com/data/icons/business-vol-4-2/100/Artboard_15-512.png"
