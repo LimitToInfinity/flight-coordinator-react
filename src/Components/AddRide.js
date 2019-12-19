@@ -66,7 +66,7 @@ function AddRide(props) {
                     inputProps={ inputProps }
                 />
                 <div className="form-buttons">
-                    <input type="submit" />
+                    <input type="submit" value="Submit" />
                     { checkIfRide() }
                 </div>
             </form>

@@ -71,7 +71,7 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
                     placeholder="enter flight #"
                 />
                 <div className="form-buttons">
-                    <input type="submit" />
+                    <input type="submit" value="Submit" />
                 </div>
             </form>
         </>
