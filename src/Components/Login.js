@@ -30,7 +30,7 @@ class Login extends Component {
             .then(parseJSON)
             .then(data => {
                 const { token } = data;
-                localStorage.setItem("token", token);
+                sessionStorage.setItem("token", token);
                 setToken(data.token);
             })
             .catch(error => console.error(error));
@@ -68,6 +68,7 @@ class Login extends Component {
                 onClick={ this.handleSubmit }
                 variant="outlined"
                 color="primary"
+                type="submit"
             >
                 Submit
             </Button>

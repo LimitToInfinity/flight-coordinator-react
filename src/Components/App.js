@@ -21,7 +21,7 @@ class App extends Component {
 
   handleToken = (status) => {
     status === 500
-      ? localStorage.removeItem( "token" )
+      ? sessionStorage.removeItem( "token" )
       : this.setState({ status: true });
   }
 
@@ -48,7 +48,7 @@ class App extends Component {
 }
 
 function fetchCall(url) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const headers = { Authorization: "Bearer " + token };
   return fetch(url, { headers })
 }

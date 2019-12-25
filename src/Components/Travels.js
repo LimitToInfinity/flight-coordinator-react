@@ -9,10 +9,10 @@ import Departures from "./Departures";
 
 function Travels({ toggleModal, toggleFlight, allFlights }) {
 
-    const current = moment(new Date()).format();
+    const current = moment.parseZone( new Date() ).format();
 
     const flights = allFlights.filter(flight => {
-        return moment(flight.datetime).format() > current;
+        return moment.parseZone( flight.datetime_string ).format() > current;
     }).sort(byDate);
 
     const arrivals = () => flights.filter(flight => flight.direction === "arrival");
@@ -40,8 +40,8 @@ function Travels({ toggleModal, toggleFlight, allFlights }) {
 }
 
 function byDate(a, b) {
-    if (a.datetime < b.datetime) { return -1; }
-    else if (a.datetime > b.datetime) { return 1; }
+    if (a.datetime_string < b.datetime_string) { return -1; }
+    else if (a.datetime_string > b.datetime_string) { return 1; }
     else { return 0; }
 }
 

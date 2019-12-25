@@ -13,7 +13,7 @@ const ridesURL = "https://cousintrackerback.herokuapp.com/rides/";
 class Modal extends Component {
     
     state = {
-        datetime: moment(this.props.flight.datetime) || 
+        datetime: moment.parseZone(this.props.flight.datetime_string) || 
             moment(new Date()),
         direction: "",
         airport: "",
@@ -122,7 +122,8 @@ function createFlight(person, state, addFlight) {
         airport,
         airline,
         number: flightNumber,
-        datetime,
+        datetime: moment(datetime).format(),
+        datetime_string: moment(datetime).format(),
     };
     const body = JSON.stringify(flightParams);
 
@@ -138,7 +139,8 @@ function updateCurrentRide(person, flight, datetime, updateRide) {
             driver_id: person.id,
             shuttle_attributes: {
                 id: flight.ride.shuttle.id,
-                datetime,
+                datetime: moment(datetime).format(),
+                datetime_string: moment(datetime).format(),
             }
         }
     };
@@ -158,7 +160,8 @@ function createRide(person, flight, datetime, updateRide) {
             traveler_id: flight.traveler.id,
             flight_id: flight.id,
             shuttle_attributes: {
-                datetime,
+                datetime: moment(datetime).format(),
+                datetime_string: moment(datetime).format(),
             }
         }
     };
@@ -171,7 +174,7 @@ function createRide(person, flight, datetime, updateRide) {
 }
 
 function fetchCall(url, method, body) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = { 
         "Content-Type": "application/json",
         "Authorization": "Bearer " + token

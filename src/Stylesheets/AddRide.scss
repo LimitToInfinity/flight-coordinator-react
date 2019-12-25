@@ -4,11 +4,11 @@
 
     .form-buttons {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
     
         input[type=submit] {
-            width: 30%;
-            height: 1.7rem;
+            width: 20%;
+            height: 2rem;
             margin-top: 1rem;
             color: midnightblue;
             border: lightskyblue solid 1px;
@@ -22,11 +22,12 @@
         }
 
         .delete-ride {
-            align-self: flex-start;
-            width: 30%;
+            width: 20%;
+            height: 2rem;
+            margin: 1rem 0 0 1rem;
             color: darkred;
             border: firebrick solid 1px;
-            border-radius: 5px;
+            border-radius: 7px;
             cursor: pointer;
             
             &:hover {

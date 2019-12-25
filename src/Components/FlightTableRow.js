@@ -6,9 +6,9 @@ import './../Stylesheets/FlightTableRow.scss';
 
 function FlightTableRow({ flight, toggleModal, toggleFlight }) {
 
-    const day = moment(flight.datetime).format("ddd");
-    const date = moment(flight.datetime).format("MMM DD");
-    const time = moment(flight.datetime).format("h:mm a");
+    const day = moment.parseZone(flight.datetime_string).format("ddd");
+    const date = moment.parseZone(flight.datetime_string).format("MMM DD");
+    const time = moment.parseZone(flight.datetime_string).format("h:mm a");
 
     const handleClick = () => {
         toggleFlight(flight);

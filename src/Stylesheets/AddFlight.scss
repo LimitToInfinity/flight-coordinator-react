@@ -59,22 +59,4 @@
     select option {
         font-weight:normal;
     }
-
-    .form-buttons {
-        display: flex;
-        justify-content: space-between;
-    
-        .modal-submit {
-            align-self: flex-end;
-            width: 30%;
-            color: midnightblue;
-            border: lightskyblue solid 1px;
-            border-radius: 5px;
-            cursor: pointer;
-            
-            &:hover {
-                background-color: hsl(200, 90%, 96%);
-            }
-        }
-    }
 }

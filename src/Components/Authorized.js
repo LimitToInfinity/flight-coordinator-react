@@ -159,7 +159,7 @@ function aToZ(a, b) {
 }
 
 function fetchCall(url) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const headers = { Authorization: "Bearer " + token };
   return fetch(url, { headers })
 }
