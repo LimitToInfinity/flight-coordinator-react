@@ -1,21 +1,21 @@
 .travels {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
-    .add-flight {
-        align-self: center;
-        font-size: 1.8rem;
-        color: midnightblue;
-        border: lightskyblue solid 1px;
-        border-radius: 5px;
-        background-color: inherit;
-        margin: 0.5rem 0 1.5rem;
-        padding: 0.5rem 1rem;
-        cursor: pointer;
+  .add-flight {
+    align-self: center;
+    font-size: 1.8rem;
+    color: midnightblue;
+    border: lightskyblue solid 1px;
+    border-radius: 5px;
+    background-color: inherit;
+    margin: 0.5rem 0 1.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
 
-        &:hover {
-            background-color: hsl(200, 90%, 96%);
-        }
+    &:hover {
+      background-color: hsl(200, 90%, 96%);
     }
+  }
 }

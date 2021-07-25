@@ -1,30 +1,30 @@
 .tbody {
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-        background-color: hsl(0, 0%, 90%);
+  &:hover {
+    background-color: hsl(0, 0%, 90%);
+  }
+
+  tr {
+    border-bottom: 1px solid steelblue;
+
+    td {
+      padding: 7px;
+      text-align: center;
+      display: inline-block;
+      width: 5rem;
+
+      img {
+          height: 50px;
+      }
     }
 
-    tr {
-        border-bottom: 1px solid steelblue;
-
-        td {
-            padding: 7px;
-            text-align: center;
-            display: inline-block;
-            width: 5rem;
-
-            img {
-                height: 50px;
-            }
-        }
-
-        .has {
-            color: green;
-        }
-
-        .needs {
-            color: red;
-        }
+    .has {
+      color: green;
     }
+
+    .needs {
+      color: red;
+    }
+  }
 }

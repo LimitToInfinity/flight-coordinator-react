@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 
-import './../Stylesheets/Authorized.scss';
+import '../Stylesheets/Authorized.scss';
 
 import People from './People';
 import Header from './Header';
 import Travels from './Travels';
 import Modal from './Modal';
 
-const peopleURL = "https://cousintrackerback.herokuapp.com/people/";
-const flightsURL = "https://cousintrackerback.herokuapp.com/flights/";
-const ridesURL = "https://cousintrackerback.herokuapp.com/rides/";
-const shuttlesURL = "https://cousintrackerback.herokuapp.com/shuttles/";
+const peopleURL = "http://localhost:3000/people/";
+const flightsURL = "http://localhost:3000/flights/";
+const ridesURL = "http://localhost:3000/rides/";
+const shuttlesURL = "http://localhost:3000/shuttles/";
 
 class Authorized extends Component {
   
@@ -159,7 +159,7 @@ function aToZ(a, b) {
 }
 
 function fetchCall(url) {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const headers = { Authorization: "Bearer " + token };
   return fetch(url, { headers })
 }

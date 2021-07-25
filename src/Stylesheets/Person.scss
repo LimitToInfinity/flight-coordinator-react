@@ -1,23 +1,23 @@
 .person {
-    flex-basis: 17rem;
-    border-bottom: 1px solid firebrick;
+  flex-basis: 17rem;
+  border-bottom: 1px solid firebrick;
 
-    div {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 1rem auto;
-        cursor: pointer;
-    }
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem auto;
+    cursor: pointer;
+  }
 
-    h3 {
-        font-size: 2.3rem;
-        font-weight: 500;
-    }
+  h3 {
+    font-size: 2.3rem;
+    font-weight: 500;
+  }
 
-    img {
-        height: 110px;
-        width: 40%;
-    }
+  img {
+    height: 110px;
+    width: 40%;
+  }
 }
 

@@ -1,26 +1,26 @@
 nav {
-    width: 100%;
+  width: 100%;
 
-    .person {
-        display: flex;
-        justify-content: flex-end;
-        width: unset;
-        border: none;
+  .person {
+    display: flex;
+    justify-content: flex-end;
+    width: unset;
+    border: none;
 
-        div {
-            height: 60px;
-            margin: 0;
+    div {
+      height: 60px;
+      margin: 0;
 
-            h3 {
-                font-size: 1rem;
-                font-weight: 300;
-            }
-    
-            img {
-                margin-left: 1rem;
-                width: 60px;
-                height: 60px;
-            }
-        }
+      h3 {
+        font-size: 1rem;
+        font-weight: 300;
+      }
+
+      img {
+        margin-left: 1rem;
+        width: 60px;
+        height: 60px;
+      }
     }
+  }
 }

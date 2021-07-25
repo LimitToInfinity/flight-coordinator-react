@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 .App {
-    display: flex;
-    flex-direction: column;
-    font-family: Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  font-family: Roboto, sans-serif;
 }
 
 .gradient {
-    height: 100vh;
-    width: 100vw;
-    background: linear-gradient(0deg, #ededed 0 0, transparent 40% 40%);
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(0deg, #ededed 0 0, transparent 40% 40%);
 }

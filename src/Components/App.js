@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import './../Stylesheets/App.scss';
+import '../Stylesheets/App.scss';
 
 import Authorized from './Authorized';
 import Login from './Login';
 
-const shuttlesURL = "https://cousintrackerback.herokuapp.com/shuttles/";
+const shuttlesURL = "http://localhost:3000/shuttles";
 
 class App extends Component {
 
@@ -15,13 +15,13 @@ class App extends Component {
   }
 
   checkTokenValidity = () => {
-    fetchCall( shuttlesURL )
-      .then( response => this.handleToken(response.status) );
+    fetchCall(shuttlesURL)
+      .then(response => this.handleToken(response.status));
   }
 
   handleToken = (status) => {
     status === 500
-      ? sessionStorage.removeItem( "token" )
+      ? localStorage.removeItem( "token" )
       : this.setState({ status: true });
   }
 
@@ -48,7 +48,7 @@ class App extends Component {
 }
 
 function fetchCall(url) {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const headers = { Authorization: "Bearer " + token };
   return fetch(url, { headers })
 }
