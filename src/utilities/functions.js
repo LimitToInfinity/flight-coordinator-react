@@ -1,8 +1,19 @@
 const parseJSON = response => response.json();
 
-export const authFetch = url => {
-  const headers = { Authorization: `Bearer ${localStorage.token}` };
-  return fetch(url, { headers }).then(parseJSON);
+export const authFetch = (url, method, body) => {
+  const headers = { 
+    Authorization: `Bearer ${localStorage.token}`,
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  };
+  return method === 'DELETE'
+    ? fetch(url, { method, headers, body })
+    : fetch(url, { method, headers, body }).then(parseJSON);
+}
+
+export const noAuthFetch = (url, method, body) => {
+  const headers = { 'Content-Type': 'application/json' };
+  return fetch(url, { method, headers, body }).then(parseJSON);
 }
 
 function unNest(instance) {

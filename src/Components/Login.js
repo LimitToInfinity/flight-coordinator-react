@@ -9,6 +9,7 @@ import MUITextField from './MUITextField';
 import MUIButton from './MUIButton';
 
 import { urls } from '../utilities/urls';
+import { noAuthFetch } from '../utilities/functions';
 
 function Login({ setIsLoggedIn }) {
 
@@ -23,8 +24,7 @@ function Login({ setIsLoggedIn }) {
       password: guest || password
     });
 
-    fetchCall(urls.login, 'POST', userBody)
-      .then(parseJSON)
+    noAuthFetch(urls.login, 'POST', userBody)
       .then(({token}) => {
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
@@ -56,15 +56,6 @@ function Login({ setIsLoggedIn }) {
       />
     </Box>
   );
-}
-    
-function fetchCall(url, method, body){
-  const headers = { 'Content-Type': 'application/json' };
-  return fetch(url, { method, headers, body });
-}
-
-function parseJSON(response) {
-  return response.json();
 }
 
 export default Login;

@@ -6,7 +6,15 @@ import Datetime from "react-datetime";
 import "../Stylesheets/AddFlight.scss";
 import '../Stylesheets/Datetime.scss';
 
-function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
+function AddFlight({
+  datetime,
+  setDirection,
+  setAirport,
+  setAirline,
+  setFlightNumber,
+  handleDate,
+  handleSubmit
+}) {
 
   const yesterday = Datetime.moment().subtract(1, 'day');
   const oneYearFromNow = Datetime.moment().add(1, 'year');
@@ -28,7 +36,7 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
         inputProps={ inputProps }
       />
       <select
-        onChange={ handleChange }
+        onChange={ event => setDirection(event.target.value) }
         id="direction"
         name="direction" 
       >
@@ -37,7 +45,7 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
         <option value="departure">Departure</option>
       </select>
       <select
-        onChange={ handleChange }
+        onChange={ event => setAirline(event.target.value) }
         id="airline"
         name="airline" 
       >
@@ -51,7 +59,7 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
         <option value="United">United</option>
       </select>
       <select
-        onChange={ handleChange }
+        onChange={ event => setAirport(event.target.value) }
         id="airport"
         name="airport" 
       >
@@ -63,7 +71,7 @@ function AddFlight({ datetime, handleDate, handleChange, handleSubmit }) {
         Flight number?
       </label>
       <input
-        onChange={ handleChange }
+        onChange={ event => setFlightNumber(event.target.value) }
         type="text"
         id="flightNumber"
         name="flightNumber" 

@@ -1,49 +1,55 @@
-import React, { Component } from "react";
+import React, { useState } from 'react';
 
-import moment from "moment";
+import moment from 'moment';
 
-import "../Stylesheets/Modal.scss";
+import '../Stylesheets/Modal.scss';
 
-import AddRide from "./AddRide";
-import AddFlight from "./AddFlight";
+import AddRide from './AddRide';
+import AddFlight from './AddFlight';
 
 import { urls } from '../utilities/urls';
+import { authFetch } from '../utilities/functions';
 
-class Modal extends Component {
+function Modal({
+  toggleModal,
+  toggleFlight,
+  person,
+  flight,
+  addFlight,
+  updateRide,
+  removeRide
+}) {
 
-  state = {
-    datetime: moment.parseZone(this.props.flight.datetime_string) || 
-      moment(new Date()),
-    direction: "",
-    airport: "",
-    airline: "",
-    flightNumber: "",
-  };
+  const [datetime, setDatetime] = useState(
+    moment.parseZone(flight.datetime_string) || moment(new Date())
+  );
+  const [direction, setDirection] = useState('');
+  const [airport, setAirport] = useState('');
+  const [airline, setAirline] = useState('');
+  const [flightNumber, setFlightNumber] = useState('');
 
-  handleClick = () => {
-    const { toggleModal, toggleFlight } = this.props;
+  const handleClick = () => {
     toggleFlight();
     toggleModal();
   }
 
-  handleDate = (date) => {
+  const handleDate = date => {
     const datetime = moment(date._d).format();
-    this.setState({ datetime });
+    setDatetime(datetime);
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
-
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const { datetime } = this.state;
-    const { person, flight, addFlight, updateRide } = this.props;
-
     if (!flight.id) {
-      createFlight(person, this.state, addFlight);
+      const flightInfo = {
+        datetime,
+        direction,
+        airport,
+        airline,
+        flightNumber
+      };
+      createFlight(person, flightInfo, addFlight);
     }
     else if (flight.ride) {
       updateCurrentRide(person, flight, datetime, updateRide);
@@ -51,63 +57,54 @@ class Modal extends Component {
       createRide(person, flight, datetime, updateRide);
     }
 
-    this.handleClick();
+    handleClick();
   }
 
-  deleteRide = () => {
-    const { flight, removeRide } = this.props;
+  const deleteRide = () => {
     const deleteURL = `${urls.rides}/${flight.ride.id}`;
 
-    fetchCall(deleteURL, "DELETE");
+    authFetch(deleteURL, 'DELETE');
 
     removeRide(flight, flight.ride);
 
-    this.handleClick();
+    handleClick();
   }
 
-  render() {
-    const { datetime, direction, airport, airline, flightNumber } = this.state;
-
-    const { flight, person } = this.props;
-
-    return (
-      <section className="modal">
-        <div 
-          className="overlay"
-          onClick={ this.handleClick }
-        >    
-        </div>
-        <div className="modal-content">
-          <button 
-            className="close-modal"
-            onClick={ this.handleClick }
-          >X
-          </button>
-          {flight.id
-            ? <AddRide
-              person={ person }
-              flight={ flight }
-              datetime={ datetime }
-              handleDate={ this.handleDate }
-              handleSubmit={ this.handleSubmit }
-              deleteRide={ this.deleteRide }
-            />
-            : <AddFlight
-              person={ person }
-              datetime={ datetime }
-              direction={ direction }
-              airport={ airport }
-              airline={ airline }
-              flightNumber={ flightNumber }
-              handleDate={ this.handleDate }
-              handleChange={ this.handleChange }
-              handleSubmit={ this.handleSubmit }
-            />
-          }
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section className='modal'>
+      <div 
+        className='overlay'
+        onClick={ handleClick }
+      >    
+      </div>
+      <div className='modal-content'>
+        <button 
+          className='close-modal'
+          onClick={ handleClick }
+        >X
+        </button>
+        {flight.id
+          ? <AddRide
+            person={ person }
+            flight={ flight }
+            datetime={ datetime }
+            handleDate={ handleDate }
+            handleSubmit={ handleSubmit }
+            deleteRide={ deleteRide }
+          />
+          : <AddFlight
+            datetime={ datetime }
+            setDirection={ setDirection }
+            setAirport={ setAirport }
+            setAirline={ setAirline }
+            setFlightNumber={ setFlightNumber }
+            handleDate={ handleDate }
+            handleSubmit={ handleSubmit }
+          />
+        }
+      </div>
+    </section>
+  );
 }
 
 function createFlight(person, state, addFlight) {
@@ -124,8 +121,7 @@ function createFlight(person, state, addFlight) {
   };
   const body = JSON.stringify(flightParams);
 
-  fetchCall(urls.flights, "POST", body)
-    .then(parseJSON)
+  authFetch(urls.flights, 'POST', body)
     .then(flight => addFlight(flight.data.attributes))
     .catch(error => console.error(error));
 }
@@ -143,8 +139,7 @@ function updateCurrentRide(person, flight, datetime, updateRide) {
   });
   const patchURL = `${urls.rides}/${flight.ride.id}`;
 
-  fetchCall(patchURL, "PATCH", rideBody)
-    .then(parseJSON)
+  authFetch(patchURL, 'PATCH', rideBody)
     .then(ride => updateRide(flight, ride.data.attributes))
     .catch(error => console.error(error));
 }
@@ -163,23 +158,9 @@ function createRide(person, flight, datetime, updateRide) {
   };
   const body = JSON.stringify(rideParams);
 
-  fetchCall(urls.rides, "POST", body)
-    .then(parseJSON)
+  authFetch(urls.rides, 'POST', body)
     .then(ride => updateRide(flight, ride.data.attributes))
     .catch(error => console.error(error));
-}
-
-function fetchCall(url, method, body) {
-  const token = localStorage.getItem("token");
-  const headers = { 
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`
-  };
-  return fetch(url, { method, headers, body });
-}
-
-function parseJSON(response) {
-  return response.json();
 }
 
 export default Modal;
