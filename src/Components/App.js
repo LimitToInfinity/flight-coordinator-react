@@ -1,56 +1,39 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import '../Stylesheets/App.scss';
 
 import Authorized from './Authorized';
 import Login from './Login';
 
-const shuttlesURL = "http://localhost:3000/shuttles";
+import { urls } from '../utilities/urls';
+import { authFetch } from '../utilities/functions';
 
-class App extends Component {
+function App() {
 
-  state = {
-    token: "",
-    status: false,
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleToken = error => {
+    error ? localStorage.removeItem("token") : setIsLoggedIn(true);
   }
 
-  checkTokenValidity = () => {
-    fetchCall(shuttlesURL)
-      .then(response => this.handleToken(response.status));
-  }
+  useEffect(() => {
+    const checkTokenValidity = async () => {
+      const { error } = await authFetch(urls.shuttles);
+      handleToken(error);
+    }
 
-  handleToken = (status) => {
-    status === 500
-      ? localStorage.removeItem( "token" )
-      : this.setState({ status: true });
-  }
+    localStorage.token && checkTokenValidity();
+  }, []);
 
-  componentDidMount() {
-    this.checkTokenValidity();
-  }
 
-  setToken = (token) => {
-    this.setState({ token });
-  }
-  
-  render() {
-    const { token, status } = this.state;
-
-    return (
-      <div className={token || status ? "App" : "App gradient"}>
-        {token || status
-          ? <Authorized />
-          : <Login setToken={ this.setToken } />
-        }
-      </div>
-    );
-  }
-}
-
-function fetchCall(url) {
-  const token = localStorage.getItem("token");
-  const headers = { Authorization: "Bearer " + token };
-  return fetch(url, { headers })
+  return (
+    <div className={isLoggedIn ? "App" : "App gradient"}>
+      {isLoggedIn
+        ? <Authorized setIsLoggedIn={ setIsLoggedIn } />
+        : <Login setIsLoggedIn={ setIsLoggedIn } />
+      }
+    </div>
+  );
 }
 
 export default App;

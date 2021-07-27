@@ -14,5 +14,10 @@ section {
     flex-flow: wrap;
     justify-content: space-between;
     padding: 1rem 3rem 5rem;
+
+    &::after {
+      content: "";
+      flex-basis: 17rem;
+    }
   }
 }

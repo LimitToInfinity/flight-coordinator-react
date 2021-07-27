@@ -4,11 +4,16 @@ import '../Stylesheets/Header.scss';
 
 import Nav from "./Nav";
 
-function Header({ person, togglePerson }) {
+function Header({ person, togglePerson, setIsLoggedIn }) {
+
+  const logout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+  }
 
   return (
     <header>
-      <h1>Flight Coordinator!</h1>
+      <h1 onClick={logout}>Flight Coordinator!</h1>
       <Nav
         person={ person }
         togglePerson={ togglePerson }

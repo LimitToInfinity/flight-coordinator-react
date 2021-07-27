@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import '../Stylesheets/Authorized.scss';
 
@@ -7,130 +7,84 @@ import Header from './Header';
 import Travels from './Travels';
 import Modal from './Modal';
 
-const peopleURL = "http://localhost:3000/people/";
-const flightsURL = "http://localhost:3000/flights/";
-const ridesURL = "http://localhost:3000/rides/";
-const shuttlesURL = "http://localhost:3000/shuttles/";
+import { urls } from '../utilities/urls';
+import { authFetch, aToZ, extractData } from '../utilities/functions';
 
-class Authorized extends Component {
+function Authorized({ setToken, setIsLoggedIn }) {
   
-  state = {
-    isModal: false,
-    person: {},
-    flight: {},
-    people: [],
-    flights: [],
-    rides: [],
-    shuttles: [],
-  }
-  
-  componentDidMount() {
-    fetchCall( peopleURL )
-      .then( parseJSON )
-      .then( json => this.setState({ people: extractData(json).sort(aToZ) }) );
+  const [showModal, setShowModal] = useState(false);
+  const [person, setPerson] = useState({});
+  const [flight, setFlight] = useState({});
+  const [people, setPeople] = useState([]);
+  const [flights, setFlights] = useState([]);
 
-    fetchCall( flightsURL )
-      .then( parseJSON )
-      .then( json => this.setState({ flights: extractData(json) }) );
+  useEffect(() => {
+    authFetch(urls.people)
+      .then(json => setPeople(extractData(json).sort(aToZ)));
 
-    fetchCall( ridesURL )
-      .then( parseJSON )
-      .then( json => this.setState({ rides: extractData(json) }) );
+    authFetch(urls.flights)
+      .then(json => setFlights(extractData(json)));
+  }, []);
 
-    fetchCall( shuttlesURL )
-      .then( parseJSON )
-      .then( json => this.setState({ shuttles: extractData(json) }) );
+  const toggleModal = () => setShowModal(!showModal);
+
+  const unSetPerson = () => {
+    setPerson({});
+    setShowModal(false);
   }
 
-  toggleModal = () => {
-    const { isModal } = this.state;
-    this.setState({ isModal: !isModal });
+  const unSetFlight = () => {
+    setFlight({});
+    setShowModal(false);
   }
 
-  setPerson = (person) => {
-    this.setState({ person });
-  }
+  const addFlight = newFlight => setFlights([...flights, newFlight]);
 
-  unSetPerson = () => {
-    this.setState({ person: {}, isModal: false });
-  }
-
-  setFlight = (flight) => {
-    this.setState({ flight });
-  }
-
-  unSetFlight = () => {
-    this.setState({ flight: {}, isModal: false });
-  }
-
-  addFlight = (flight) => {
-    const { flights } = this.state;
-    this.setState({ flights: [...flights, flight] });
-  }
-
-  updateRide = (modifiedFlight, newRide) => {
-    const { flights, rides } = this.state;
-
+  const updateRide = (modifiedFlight, newRide) => {
     const updated = updateFlights(flights, modifiedFlight, newRide);
-    const updatedRides = rides.filter(ride => ride.id !== newRide.id);
-
-    this.setState({
-      flights: [...updated.flights, updated.flight],
-      rides: [...updatedRides, newRide]
-    })
+    setFlights([...updated.flights, updated.flight]);
   }
 
-  removeRide = (modifiedFlight, deletedRide) => {
-    const { flights, rides } = this.state;
-
+  const removeRide = modifiedFlight => {
     const updated = updateFlights(flights, modifiedFlight, null);
-    const updatedRides = rides.filter(ride => ride.id !== deletedRide.id);
-
-    this.setState({ 
-      flights: [...updated.flights, updated.flight], 
-      rides: updatedRides 
-    })
+    setFlights([...updated.flights, updated.flight]);
   }
 
-  render() {
-    const { isModal, person, flight,
-      people, flights
-    } = this.state;
-
-    return (
-      <div className="authorized">
-        {isModal
-          ? <Modal
-            toggleModal={ this.toggleModal }
-            toggleFlight={ this.unSetFlight }
-            addFlight={ this.addFlight }
-            updateRide={ this.updateRide }
-            removeRide={ this.removeRide }
-            flight={ flight }
-            person={ person }
-          />
-          : null
-        }
-        <Header
+  return (
+    <div className="authorized">
+      {showModal
+        ? <Modal
+          toggleModal={ toggleModal }
+          toggleFlight={ unSetFlight }
+          addFlight={ addFlight }
+          updateRide={ updateRide }
+          removeRide={ removeRide }
+          flight={ flight }
           person={ person }
-          togglePerson={ this.unSetPerson }
         />
-        <main>
-          {!person.name
-            ? <People
-              people={ people }
-              togglePerson={ this.setPerson }
-            />
-            : <Travels
-              allFlights={ flights }
-              toggleModal={ this.toggleModal }
-              toggleFlight={ this.setFlight }
-            />
-          }
-        </main>
-      </div>
-    );
-  }  
+        : null
+      }
+      <Header
+        person={ person }
+        togglePerson={ unSetPerson }
+        setToken={ setToken }
+        setIsLoggedIn={ setIsLoggedIn }
+      />
+      <main>
+        {!person.name
+          ? <People
+            people={ people }
+            togglePerson={ setPerson }
+          />
+          : <Travels
+            allFlights={ flights }
+            toggleModal={ toggleModal }
+            toggleFlight={ setFlight }
+          />
+        }
+      </main>
+    </div>
+  );
 }
 
 function updateFlights(flights, modifiedFlight, newRide) {
@@ -142,30 +96,6 @@ function updateFlights(flights, modifiedFlight, newRide) {
     flights: updatedFlights,
     flight: updatedFlight,
   }
-}
-
-function extractData(fastJson) {
-  return fastJson.data.map(unNest);
-}
-
-function unNest(instance) {
-  return instance.attributes;
-}
-
-function aToZ(a, b) {
-  if (a.name < b.name) { return -1 }
-  else if (a.name > b.name) { return 1 }
-  else { return 0 }
-}
-
-function fetchCall(url) {
-  const token = localStorage.getItem("token");
-  const headers = { Authorization: "Bearer " + token };
-  return fetch(url, { headers })
-}
-
-function parseJSON(response) {
-  return response.json();
 }
 
 export default Authorized;

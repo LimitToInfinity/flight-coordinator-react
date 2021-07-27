@@ -1,85 +1,66 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import '../Stylesheets/Login.scss';
 
-import { TextField, Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 
-const loginURL = "http://localhost:3000/login/";
+import MUITypography from './MUITypography';
+import MUITextField from './MUITextField';
+import MUIButton from './MUIButton';
 
-class Login extends Component {
+import { urls } from '../utilities/urls';
 
-  state = {
-    username: "",
-    password: "",
-  }
+function Login({ setIsLoggedIn }) {
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleSubmit = (event) => {
+  const handleSubmit = (event, guest) => {
     event.preventDefault();
 
-    const { username, password } = this.state;
-    const { setToken } = this.props;
+    const userBody = JSON.stringify({
+      username: guest || username,
+      password: guest || password
+    });
 
-    const userBody = JSON.stringify({ username, password });
-
-    fetchCall(loginURL, "POST", userBody)
+    fetchCall(urls.login, 'POST', userBody)
       .then(parseJSON)
-      .then(data => {
-        const { token } = data;
-        localStorage.setItem("token", token);
-        setToken(data.token);
+      .then(({token}) => {
+        localStorage.setItem('token', token);
+        setIsLoggedIn(true);
       })
       .catch(error => console.error(error));
   }
 
-  render() {
-
-    return (
-      <form className="login">
-        <TextField
-          onChange={ this.handleChange }
-          id="username"
-          name="username"
-          label="Username"
-          type="text"
-          autoComplete="current-username"
-          variant="outlined"
-          color="primary"
-          margin="normal"
+  return (
+    <Box>
+      <MUITypography isParagraph={ true } text='Existing user' />
+      <form className='login'>
+        <MUITextField
+          type='text'
+          name='username'
+          onChange={ event => setUsername(event.target.value) }
         />
-
-        <TextField
-          onChange={ this.handleChange }
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="outlined"
-          color="primary"
-          margin="normal"
+        <MUITextField
+          type='password'
+          name='password'
+          onChange={ event => setPassword(event.target.value) }
         />
-
-        <Button
-          onClick={ this.handleSubmit }
-          variant="outlined"
-          color="primary"
-          type="submit"
-        >
-          Submit
-        </Button>
+        <MUIButton text='Login' onClick={ handleSubmit } />
       </form>
-    );
-  }
+
+      <MUITypography text='OR' />
+      <MUIButton
+        text='Login as guest' 
+        onClick={ event => handleSubmit(event, 'guest') }
+      />
+    </Box>
+  );
 }
     
 function fetchCall(url, method, body){
-  const headers = { "Content-Type": "application/json" };
-  return fetch( url, { method, headers, body });
+  const headers = { 'Content-Type': 'application/json' };
+  return fetch(url, { method, headers, body });
 }
 
 function parseJSON(response) {

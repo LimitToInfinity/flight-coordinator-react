@@ -7,8 +7,7 @@ import "../Stylesheets/Modal.scss";
 import AddRide from "./AddRide";
 import AddFlight from "./AddFlight";
 
-const flightsURL = "http://localhost:3000/flights/";
-const ridesURL = "http://localhost:3000/rides/";
+import { urls } from '../utilities/urls';
 
 class Modal extends Component {
 
@@ -57,7 +56,7 @@ class Modal extends Component {
 
   deleteRide = () => {
     const { flight, removeRide } = this.props;
-    const deleteURL = `${ridesURL}${flight.ride.id}`;
+    const deleteURL = `${urls.rides}/${flight.ride.id}`;
 
     fetchCall(deleteURL, "DELETE");
 
@@ -125,14 +124,14 @@ function createFlight(person, state, addFlight) {
   };
   const body = JSON.stringify(flightParams);
 
-  fetchCall(flightsURL, "POST", body)
+  fetchCall(urls.flights, "POST", body)
     .then(parseJSON)
     .then(flight => addFlight(flight.data.attributes))
     .catch(error => console.error(error));
 }
 
 function updateCurrentRide(person, flight, datetime, updateRide) {
-  const rideParams = {
+  const rideBody = JSON.stringify({
     ride: {
       driver_id: person.id,
       shuttle_attributes: {
@@ -141,11 +140,10 @@ function updateCurrentRide(person, flight, datetime, updateRide) {
         datetime_string: moment(datetime).format(),
       }
     }
-  };
-  const body = JSON.stringify(rideParams);
-  const patchURL = `${ridesURL}${flight.ride.id}`;
+  });
+  const patchURL = `${urls.rides}/${flight.ride.id}`;
 
-  fetchCall(patchURL, "PATCH", body)
+  fetchCall(patchURL, "PATCH", rideBody)
     .then(parseJSON)
     .then(ride => updateRide(flight, ride.data.attributes))
     .catch(error => console.error(error));
@@ -165,7 +163,7 @@ function createRide(person, flight, datetime, updateRide) {
   };
   const body = JSON.stringify(rideParams);
 
-  fetchCall(ridesURL, "POST", body)
+  fetchCall(urls.rides, "POST", body)
     .then(parseJSON)
     .then(ride => updateRide(flight, ride.data.attributes))
     .catch(error => console.error(error));
@@ -175,7 +173,7 @@ function fetchCall(url, method, body) {
   const token = localStorage.getItem("token");
   const headers = { 
     "Content-Type": "application/json",
-    "Authorization": "Bearer " + token
+    "Authorization": `Bearer ${token}`
   };
   return fetch(url, { method, headers, body });
 }
