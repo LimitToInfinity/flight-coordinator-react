@@ -2,12 +2,9 @@ import React from 'react';
 
 import { TextField } from '@material-ui/core';
 
+import { capitalize } from '../utilities/functions';
+
 function MUITextField({ name, type, onChange }) {
-
-  const capitalize = string => {
-    return string[0].toUpperCase() + string.slice(1);
-  }
-
   return (
     <TextField
       id={ name }

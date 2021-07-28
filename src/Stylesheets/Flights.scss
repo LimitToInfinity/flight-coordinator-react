@@ -1,0 +1,31 @@
+.arrivals, .departures {
+  margin-left: 2rem;
+
+  caption {
+    margin-bottom: 1rem;
+    text-align: left;
+    font-size: 2rem;
+  }
+
+  table {
+    width: 80vw;
+    display: block;
+    font-size: 1.1rem;
+  }
+}
+
+.arrivals {
+  margin-bottom: 4rem;
+
+  caption {
+    color: darkgreen;
+  }
+}
+
+.departures {
+  margin-bottom: 2.5rem;
+
+  caption {
+    color: firebrick;
+  }
+}

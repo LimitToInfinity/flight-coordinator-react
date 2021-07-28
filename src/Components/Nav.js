@@ -8,10 +8,7 @@ function Nav({ person, togglePerson }) {
 
   return (
     <nav>
-      <Person
-        person={ person }
-        togglePerson={ togglePerson }
-      />
+      <Person person={ person } togglePerson={ togglePerson } />
     </nav>
   );
 }

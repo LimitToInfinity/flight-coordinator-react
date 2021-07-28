@@ -1,17 +1,20 @@
 import React from "react";
 
-import '../Stylesheets/Arrivals.scss';
+import '../Stylesheets/Flights.scss';
+
 import FlightTableHeader from "./FlightTableHeader";
 import FlightTableRow from "./FlightTableRow";
 
-function Arrivals({ arrivals, toggleModal, toggleFlight }) {
+import { capitalize } from '../utilities/functions';
+
+function Flights({ direction, flights, toggleModal, toggleFlight }) {
 
   const displayFlightRows = () => {
-    return arrivals.map(arrival => {
+    return flights.map(flight => {
       return (
         <FlightTableRow
-          key={ arrival.id }
-          flight={ arrival }
+          key={ flight.id }
+          flight={ flight }
           toggleModal={ toggleModal }
           toggleFlight={ toggleFlight }
         />
@@ -20,9 +23,9 @@ function Arrivals({ arrivals, toggleModal, toggleFlight }) {
   }
 
   return (
-    <section className="arrivals">
+    <section className={direction}>
       <table>
-        <caption>Arrivals</caption>
+        <caption>{capitalize(direction)}</caption>
         <FlightTableHeader />
         { displayFlightRows() }
       </table>
@@ -30,4 +33,4 @@ function Arrivals({ arrivals, toggleModal, toggleFlight }) {
   );
 }
 
-export default Arrivals;
+export default Flights;

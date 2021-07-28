@@ -1,19 +1,27 @@
 @import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
 
 section {
+  width: 100%;
+
   h2 {
     font-size: 3rem;
     font-weight: 700;
-    text-align: center;
+    text-align: left;
     font-family: Bebas Neue, sans-serif;
     color: blue;
+  }
+
+  .people-header {
+    padding-left: 2rem;
+    width: 100%;
   }
 
   .people {
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
-    padding: 1rem 3rem 5rem;
+    padding: 2rem 3rem 4rem;
+    width: 100%;
 
     &::after {
       content: "";

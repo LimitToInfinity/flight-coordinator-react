@@ -18,7 +18,7 @@ function People({ people, togglePerson }) {
 
   return (
     <section>
-      <h2>Choose yourself!</h2>
+      <h2 className="people-header">Choose yourself!</h2>
       <div className="people">
         { displayPeople() }
       </div>

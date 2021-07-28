@@ -7,14 +7,14 @@ import "../Stylesheets/AddFlight.scss";
 import '../Stylesheets/Datetime.scss';
 
 function AddFlight({
-  datetime,
-  setDirection,
-  setAirport,
-  setAirline,
-  setFlightNumber,
-  handleDate,
-  handleSubmit
-}) {
+    datetime,
+    setDirection,
+    setAirport,
+    setAirline,
+    setFlightNumber,
+    handleDate,
+    handleSubmit
+  }) {
 
   const yesterday = Datetime.moment().subtract(1, 'day');
   const oneYearFromNow = Datetime.moment().add(1, 'year');

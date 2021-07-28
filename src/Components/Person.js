@@ -12,11 +12,11 @@ function Person({ person, togglePerson }) {
   const selectedPerson = () => {
     return (
       <>
-        <h3>{ person.name }</h3>
         <img
           alt={ person.name }
           src={ person.image }
         />
+        <h3>{ person.name }</h3>
       </>
     );
   }

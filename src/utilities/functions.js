@@ -27,3 +27,7 @@ export function extractData(fastJson) {
 export function aToZ(a, b) {
   return a.name.localeCompare(b.name);
 }
+
+export const capitalize = string => {
+  return string[0].toUpperCase() + string.slice(1);
+}
