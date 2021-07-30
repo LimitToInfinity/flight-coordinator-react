@@ -52,8 +52,8 @@ function Authorized({ setToken, setIsLoggedIn }) {
 
   return (
     <div className="authorized">
-      {showModal
-        ? <Modal
+      {showModal &&
+        <Modal
           toggleModal={ toggleModal }
           toggleFlight={ unSetFlight }
           addFlight={ addFlight }
@@ -62,7 +62,6 @@ function Authorized({ setToken, setIsLoggedIn }) {
           flight={ flight }
           person={ person }
         />
-        : null
       }
       <Header
         person={ person }

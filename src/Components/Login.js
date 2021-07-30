@@ -11,7 +11,7 @@ import MUIButton from './MUIButton';
 import { urls } from '../utilities/urls';
 import { noAuthFetch } from '../utilities/functions';
 
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, history }) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -28,6 +28,7 @@ function Login({ setIsLoggedIn }) {
       .then(({token}) => {
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
+        history.replace('/choose');
       })
       .catch(error => console.error(error));
   }
