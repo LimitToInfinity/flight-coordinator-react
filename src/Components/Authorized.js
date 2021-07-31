@@ -10,8 +10,8 @@ import Modal from './Modal';
 import { urls } from '../utilities/urls';
 import { authFetch, aToZ, extractData } from '../utilities/functions';
 
-function Authorized({ setToken, setIsLoggedIn }) {
-  
+function Authorized() {
+
   const [showModal, setShowModal] = useState(false);
   const [person, setPerson] = useState({});
   const [flight, setFlight] = useState({});
@@ -63,12 +63,7 @@ function Authorized({ setToken, setIsLoggedIn }) {
           person={ person }
         />
       }
-      <Header
-        person={ person }
-        togglePerson={ unSetPerson }
-        setToken={ setToken }
-        setIsLoggedIn={ setIsLoggedIn }
-      />
+      <Header person={ person } togglePerson={ unSetPerson } />
       <main>
         {!person.name
           ? <People

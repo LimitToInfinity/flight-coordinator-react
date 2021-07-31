@@ -5,21 +5,11 @@ import Login from './Login';
 import Authorized from './Authorized';
 import Travels from './Travels';
 
-function MyRoutes({ setIsLoggedIn }) {
-
+function MyRoutes() {
   return (
     <> 
-      <Route
-        path='/login'
-        render={routerProps => <Login
-          {...routerProps}
-          setIsLoggedIn={setIsLoggedIn}
-        />}
-      />
-      <Route
-        path='/choose'
-        render={() => <Authorized setIsLoggedIn={ setIsLoggedIn } />}
-      />
+      <Route path='/login' component={Login} />
+      <Route path='/choose' component={Authorized} />
       <Route
         path='/flights'
         render={() => <Travels

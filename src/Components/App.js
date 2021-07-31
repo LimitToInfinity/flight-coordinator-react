@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
 import '../Stylesheets/App.scss';
@@ -11,14 +12,17 @@ import { authFetch } from '../utilities/functions';
 
 function App() {
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleToken = error => {
-    error ? localStorage.removeItem('token') : setIsLoggedIn(true);
-  }
-  
+  const isLoggedIn = useSelector(state => state.login);
+
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
+    const handleToken = error => {
+      error ? localStorage.removeItem('token') : dispatch({ type: 'login' });
+    }
+
     const checkTokenValidity = async () => {
       const { error } = await authFetch(urls.shuttles);
       handleToken(error);
@@ -26,7 +30,7 @@ function App() {
     }
 
     localStorage.token ? checkTokenValidity() : setIsLoading(false);
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={isLoggedIn ? 'App' : 'App gradient'}>
@@ -38,7 +42,7 @@ function App() {
       </Route>
       {isLoading 
         ? <Loading />
-        : <MyRoutes setIsLoggedIn={setIsLoggedIn} />
+        : <MyRoutes />
       }
     </div>
   );

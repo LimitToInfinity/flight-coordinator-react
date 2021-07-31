@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import '../Stylesheets/Header.scss';
 
@@ -6,13 +7,15 @@ import Nav from './Nav';
 
 import PlaneLogo from '../assets/images/plane-logo.png';
 
-function Header({ person, togglePerson, setIsLoggedIn }) {
+function Header({ person, togglePerson }) {
+
+  const dispatch = useDispatch();
 
   const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
   const logout = () => {
     localStorage.clear();
-    setIsLoggedIn(false);
+    dispatch({ type: 'logout' });
   }
 
   return (

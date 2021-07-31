@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import '../Stylesheets/Login.scss';
 
@@ -11,7 +12,9 @@ import MUIButton from './MUIButton';
 import { urls } from '../utilities/urls';
 import { noAuthFetch } from '../utilities/functions';
 
-function Login({ setIsLoggedIn, history }) {
+function Login({ history }) {
+
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +30,7 @@ function Login({ setIsLoggedIn, history }) {
     noAuthFetch(urls.login, 'POST', userBody)
       .then(({token}) => {
         localStorage.setItem('token', token);
-        setIsLoggedIn(true);
+        dispatch({ type: 'login' });
         history.replace('/choose');
       })
       .catch(error => console.error(error));
