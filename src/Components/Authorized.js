@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import '../Stylesheets/Authorized.scss';
 
@@ -13,61 +13,35 @@ import { authFetch, aToZ, extractData } from '../utilities/functions';
 
 function Authorized() {
 
+  const dispatch = useDispatch();
+
   const showModal = useSelector(state => state.modal);
   const person = useSelector(state => state.person);
 
-  const [people, setPeople] = useState([]);
-  const [flights, setFlights] = useState([]);
-
   useEffect(() => {
-    authFetch(urls.people)
-      .then(json => setPeople(extractData(json).sort(aToZ)));
-
-    authFetch(urls.flights)
-      .then(json => setFlights(extractData(json)));
-  }, []);
-
-  const addFlight = newFlight => setFlights([...flights, newFlight]);
-
-  const updateRide = (modifiedFlight, newRide) => {
-    const updated = updateFlights(flights, modifiedFlight, newRide);
-    setFlights([...updated.flights, updated.flight]);
-  }
-
-  const removeRide = modifiedFlight => {
-    const updated = updateFlights(flights, modifiedFlight, null);
-    setFlights([...updated.flights, updated.flight]);
-  }
+    getPeople().then(people => dispatch({ type: 'SET_PEOPLE', people }));
+    getFlights().then(flights => dispatch({ type: 'SET_FLIGHTS', flights }));
+  }, [dispatch]);
 
   return (
     <div className='authorized'>
-      {showModal &&
-        <Modal
-          addFlight={ addFlight }
-          updateRide={ updateRide }
-          removeRide={ removeRide }
-        />
-      }
+      {showModal && <Modal />}
       <Header />
-      <main>
-        {!person.id
-          ? <People people={ people } />
-          : <Travels allFlights={ flights } />
-        }
-      </main>
+      <main>{!person.id ? <People /> : <Travels />}</main>
     </div>
   );
 }
 
-function updateFlights(flights, modifiedFlight, newRide) {
-  const updatedFlights = flights.filter(flight => flight.id !== modifiedFlight.id);
-  const updatedFlight = flights.find(flight => flight.id === modifiedFlight.id);
-  updatedFlight.ride = newRide;
+async function getPeople() {
+  const json = await authFetch(urls.people);
+  const people = extractData(json).sort(aToZ);
+  return people;
+}
 
-  return {
-    flights: updatedFlights,
-    flight: updatedFlight,
-  }
+async function getFlights() {
+  const json = await authFetch(urls.flights);
+  const flights = extractData(json);
+  return flights;
 }
 
 export default Authorized;

@@ -11,11 +11,7 @@ import AddFlight from './AddFlight';
 import { urls } from '../utilities/urls';
 import { authFetch } from '../utilities/functions';
 
-function Modal({
-    addFlight,
-    updateRide,
-    removeRide
-  }) {
+function Modal() {
 
   const dispatch = useDispatch();
 
@@ -41,12 +37,12 @@ function Modal({
     event.preventDefault();
 
     if (!flight.id) {
-      const flightInfo = { datetime, direction, airport, airline, flightNumber };
-      createFlight(person, flightInfo, addFlight);
+      const flightInfo = { person, datetime, direction, airport, airline, flightNumber };
+      createFlight(flightInfo, dispatch);
     } else if (flight.ride) {
-      updateCurrentRide(person, flight, datetime, updateRide);
+      updateCurrentRide(person, flight, datetime, dispatch);
     } else if (!flight.ride) {
-      createRide(person, flight, datetime, updateRide);
+      createRide(person, flight, datetime, dispatch);
     }
 
     closeModal();
@@ -56,7 +52,7 @@ function Modal({
     const deleteURL = `${urls.rides}/${flight.ride.id}`;
     authFetch(deleteURL, 'DELETE');
 
-    removeRide(flight);
+    dispatch({ type: 'REMOVE_RIDE', modifiedFlightId: flight.id });
 
     closeModal();
   }
@@ -88,8 +84,8 @@ function Modal({
   );
 }
 
-function createFlight(person, flightInfo, addFlight) {
-  const { direction, airport, airline, flightNumber, datetime } = flightInfo;
+function createFlight(flightInfo, dispatch) {
+  const { person, direction, airport, airline, flightNumber, datetime } = flightInfo;
 
   const flightBody = JSON.stringify({
     direction,
@@ -102,11 +98,13 @@ function createFlight(person, flightInfo, addFlight) {
   });
 
   authFetch(urls.flights, 'POST', flightBody)
-    .then(flight => addFlight(flight.data.attributes))
+    .then(newFlight => {
+      dispatch({ type: 'ADD_FLIGHT', newFlight: newFlight.data.attributes });
+    })
     .catch(error => console.error(error));
 }
 
-function updateCurrentRide(person, flight, datetime, updateRide) {
+function updateCurrentRide(person, flight, datetime, dispatch) {
   const rideBody = JSON.stringify({
     ride: {
       driver_id: person.id,
@@ -120,11 +118,17 @@ function updateCurrentRide(person, flight, datetime, updateRide) {
   const patchURL = `${urls.rides}/${flight.ride.id}`;
 
   authFetch(patchURL, 'PATCH', rideBody)
-    .then(ride => updateRide(flight, ride.data.attributes))
+    .then(updatedRide => {
+      dispatch({
+        type: 'UPDATE_RIDE',
+        modifiedFlightId: flight.id,
+        ride: updatedRide.data.attributes
+      });
+    })
     .catch(error => console.error(error));
 }
 
-function createRide(person, flight, datetime, updateRide) {
+function createRide(person, flight, datetime, dispatch) {
   const rideBody = JSON.stringify({
     ride: {
       driver_id: person.id,
@@ -138,7 +142,13 @@ function createRide(person, flight, datetime, updateRide) {
   });
 
   authFetch(urls.rides, 'POST', rideBody)
-    .then((ride) => updateRide(flight, ride.data.attributes))
+    .then(newRide => {
+      dispatch({
+        type: 'UPDATE_RIDE',
+        modifiedFlightId: flight.id,
+        ride: newRide.data.attributes
+      });
+    })
     .catch(error => console.error(error));
 }
 

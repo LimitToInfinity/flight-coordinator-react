@@ -1,8 +1,12 @@
+import { useSelector } from 'react-redux';
+
 import '../Stylesheets/People.scss';
 
 import Person from './Person';
 
-function People({ people }) {
+function People() {
+
+  const people = useSelector(state => state.people);
 
   const displayPeople = () => {
     return people.map(person => {
@@ -13,9 +17,7 @@ function People({ people }) {
   return (
     <section>
       <h2 className='people-header'>Choose yourself!</h2>
-      <div className='people'>
-        { displayPeople() }
-      </div>
+      <div className='people'>{ displayPeople() }</div>
     </section>
   );
 }

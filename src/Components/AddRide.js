@@ -56,7 +56,7 @@ function AddRide({ datetime, handleDate, handleSubmit, deleteRide }) {
         />
         <div className='form-buttons'>
           {isDriver
-            ? <button className='delete-ride' onClick={ deleteRide }>
+            ? <button type='button' className='delete-ride' onClick={ deleteRide }>
               Remove ride
             </button>
             : <div></div>

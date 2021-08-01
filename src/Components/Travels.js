@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import moment from 'moment';
 
@@ -6,9 +6,11 @@ import '../Stylesheets/Travels.scss';
 
 import Flights from './Flights';
 
-function Travels({ allFlights }) {
+function Travels() {
 
   const dispatch = useDispatch();
+
+  const allFlights = useSelector(state => state.flights);
 
   const now = moment.parseZone(new Date()).format();
   const inTheFuture = flight => {
@@ -29,14 +31,8 @@ function Travels({ allFlights }) {
       >
         Add flight
       </button>
-      <Flights
-        direction='arrivals'
-        flights={ arrivals() }
-      />
-      <Flights
-        direction='departures'
-        flights={ departures() }
-      />
+      <Flights direction='arrivals' flights={ arrivals() } />
+      <Flights direction='departures' flights={ departures() } />
     </section>
   );
 }
