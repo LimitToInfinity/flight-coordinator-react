@@ -48,7 +48,7 @@ function AddRide({ datetime, handleDate, handleSubmit, deleteRide }) {
         </label>
         <Datetime 
           onChange={ handleDate }
-          defaultValue={flight.direction === 'arrival'
+          initialValue={flight.direction === 'arrival'
             ? moment(datetime)
             : moment(datetime).subtract(105, 'minutes')
           }

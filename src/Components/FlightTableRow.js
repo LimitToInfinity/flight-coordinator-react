@@ -19,23 +19,21 @@ function FlightTableRow({ flight }) {
   }
 
   return (
-    <tbody onClick={ handleClick }>
-      <tr>
-        <td>
-          <img alt={ flight.traveler.name } src={ flight.traveler.image } />
-        </td>
-        <td>{ flight.traveler.name }</td>
-        <td>{ flight.airport }</td>
-        <td>{ flight.airline }</td>
-        <td>{ flight.number }</td>
-        <td>{ day }</td>
-        <td>{ date }</td>
-        <td>{ time }</td>
-        <td className={ flight.ride ? 'has' : 'needs' }>
-          {flight.ride ? flight.ride.driver.name : 'Click to give ride'}
-        </td>
-      </tr>
-    </tbody>
+    <tr className='flight-row' onClick={ handleClick }>
+      <td>
+        <img alt={ flight.traveler.name } src={ flight.traveler.image } />
+      </td>
+      <td>{ flight.traveler.name }</td>
+      <td>{ flight.airport }</td>
+      <td>{ flight.airline }</td>
+      <td>{ flight.number }</td>
+      <td>{ day }</td>
+      <td>{ date }</td>
+      <td>{ time }</td>
+      <td className={ flight.ride ? 'has' : 'needs' }>
+        {flight.ride ? flight.ride.driver.name : 'Click to give ride'}
+      </td>
+    </tr>
   );
 }
 

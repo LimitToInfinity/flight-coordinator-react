@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
+import 'react-datetime/css/react-datetime.css';
+
 import '../Stylesheets/App.scss';
 
 import Loading from './Loading';

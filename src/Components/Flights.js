@@ -20,7 +20,7 @@ function Flights({ direction, flights }) {
       <table>
         <caption>{capitalize(direction)}</caption>
         <FlightTableHeader />
-        { displayFlightRows() }
+        <tbody>{ displayFlightRows() }</tbody>
       </table>
     </section>
   );

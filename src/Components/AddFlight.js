@@ -4,7 +4,6 @@ import moment from 'moment';
 import Datetime from 'react-datetime';
 
 import '../Stylesheets/AddFlight.scss';
-import '../Stylesheets/Datetime.scss';
 
 function AddFlight({
     datetime,
@@ -29,9 +28,9 @@ function AddFlight({
       <label htmlFor='datetime'>
         When is your flight?
       </label>
-      <Datetime 
+      <Datetime
         onChange={ handleDate }
-        defaultValue={ moment(datetime) }
+        initialValue={ moment(datetime) }
         isValidDate={ isValid }
         inputProps={ inputProps }
       />
