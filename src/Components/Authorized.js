@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import '../Stylesheets/Authorized.scss';
 
@@ -12,9 +13,9 @@ import { authFetch, aToZ, extractData } from '../utilities/functions';
 
 function Authorized() {
 
-  const [showModal, setShowModal] = useState(false);
-  const [person, setPerson] = useState({});
-  const [flight, setFlight] = useState({});
+  const showModal = useSelector(state => state.modal);
+  const person = useSelector(state => state.person);
+
   const [people, setPeople] = useState([]);
   const [flights, setFlights] = useState([]);
 
@@ -25,18 +26,6 @@ function Authorized() {
     authFetch(urls.flights)
       .then(json => setFlights(extractData(json)));
   }, []);
-
-  const toggleModal = () => setShowModal(!showModal);
-
-  const unSetPerson = () => {
-    setPerson({});
-    setShowModal(false);
-  }
-
-  const unSetFlight = () => {
-    setFlight({});
-    setShowModal(false);
-  }
 
   const addFlight = newFlight => setFlights([...flights, newFlight]);
 
@@ -51,30 +40,19 @@ function Authorized() {
   }
 
   return (
-    <div className="authorized">
+    <div className='authorized'>
       {showModal &&
         <Modal
-          toggleModal={ toggleModal }
-          toggleFlight={ unSetFlight }
           addFlight={ addFlight }
           updateRide={ updateRide }
           removeRide={ removeRide }
-          flight={ flight }
-          person={ person }
         />
       }
-      <Header person={ person } togglePerson={ unSetPerson } />
+      <Header />
       <main>
-        {!person.name
-          ? <People
-            people={ people }
-            togglePerson={ setPerson }
-          />
-          : <Travels
-            allFlights={ flights }
-            toggleModal={ toggleModal }
-            toggleFlight={ setFlight }
-          />
+        {!person.id
+          ? <People people={ people } />
+          : <Travels allFlights={ flights } />
         }
       </main>
     </div>

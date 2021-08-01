@@ -12,9 +12,9 @@ function MUITextField({ name, type, onChange }) {
       name={ name }
       label={ capitalize(name) }
       autoComplete={`current-${name}`}
-      variant="outlined"
-      color="primary"
-      margin="normal"
+      variant='outlined'
+      color='primary'
+      margin='normal'
       onChange={ onChange }
     />
   );

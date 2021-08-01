@@ -1,18 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import moment from 'moment';
 import Datetime from 'react-datetime';
 
 import '../Stylesheets/AddRide.scss';
 
-function AddRide({
-    datetime,
-    handleDate,
-    handleSubmit,
-    deleteRide,
-    flight,
-    person
-  }) {
+function AddRide({ datetime, handleDate, handleSubmit, deleteRide }) {
+
+  const person = useSelector(state => state.person);
+  const flight = useSelector(state => state.flight);
 
   const yesterday = Datetime.moment().subtract(1, 'day');
   const oneYearFromNow = Datetime.moment().add(1, 'year');

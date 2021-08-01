@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import moment from 'moment';
 
@@ -6,7 +7,9 @@ import '../Stylesheets/Travels.scss';
 
 import Flights from './Flights';
 
-function Travels({ toggleModal, toggleFlight, allFlights }) {
+function Travels({ allFlights }) {
+
+  const dispatch = useDispatch();
 
   const now = moment.parseZone(new Date()).format();
   const inTheFuture = flight => {
@@ -21,18 +24,19 @@ function Travels({ toggleModal, toggleFlight, allFlights }) {
 
   return (
     <section className='travels'>
-      <button onClick={toggleModal} className='add-flight'>Add flight</button>
+      <button
+        onClick={() => dispatch({ type: 'SHOW_MODAL' })}
+        className='add-flight'
+      >
+        Add flight
+      </button>
       <Flights
         direction='arrivals'
         flights={ arrivals() }
-        toggleFlight={ toggleFlight }
-        toggleModal={ toggleModal }
       />
       <Flights
         direction='departures'
         flights={ departures() }
-        toggleFlight={ toggleFlight }
-        toggleModal={ toggleModal }
       />
     </section>
   );

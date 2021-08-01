@@ -7,7 +7,7 @@ import Nav from './Nav';
 
 import PlaneLogo from '../assets/images/plane-logo.png';
 
-function Header({ person, togglePerson }) {
+function Header() {
 
   const dispatch = useDispatch();
 
@@ -15,7 +15,7 @@ function Header({ person, togglePerson }) {
 
   const logout = () => {
     localStorage.clear();
-    dispatch({ type: 'logout' });
+    dispatch({ type: 'LOGOUT' });
   }
 
   return (
@@ -24,7 +24,7 @@ function Header({ person, togglePerson }) {
         {isMobile && <img src={PlaneLogo} alt='plane logo' />}
         <h1 onClick={logout}>Flight Coordinator!</h1>
       </div>
-      <Nav person={ person } togglePerson={ togglePerson } />
+      <Nav />
     </header>
   );
 }

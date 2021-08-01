@@ -1,25 +1,18 @@
-import React from "react";
+import React from 'react';
 
 import '../Stylesheets/Flights.scss';
 
-import FlightTableHeader from "./FlightTableHeader";
-import FlightTableRow from "./FlightTableRow";
+import FlightTableHeader from './FlightTableHeader';
+import FlightTableRow from './FlightTableRow';
 
 import { capitalize } from '../utilities/functions';
 
-function Flights({ direction, flights, toggleModal, toggleFlight }) {
+function Flights({ direction, flights }) {
 
   const displayFlightRows = () => {
     return flights.map(flight => {
-      return (
-        <FlightTableRow
-          key={ flight.id }
-          flight={ flight }
-          toggleModal={ toggleModal }
-          toggleFlight={ toggleFlight }
-        />
-      );
-    })
+      return <FlightTableRow key={ flight.id } flight={ flight } />;
+    });
   }
 
   return (

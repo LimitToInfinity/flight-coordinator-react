@@ -20,7 +20,7 @@ function App() {
 
   useEffect(() => {
     const handleToken = error => {
-      error ? localStorage.removeItem('token') : dispatch({ type: 'login' });
+      error ? localStorage.removeItem('token') : dispatch({ type: 'LOGIN' });
     }
 
     const checkTokenValidity = async () => {

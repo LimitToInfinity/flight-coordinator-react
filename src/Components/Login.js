@@ -30,7 +30,7 @@ function Login({ history }) {
     noAuthFetch(urls.login, 'POST', userBody)
       .then(({token}) => {
         localStorage.setItem('token', token);
-        dispatch({ type: 'login' });
+        dispatch({ type: 'LOGIN' });
         history.replace('/choose');
       })
       .catch(error => console.error(error));

@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
 import '../Stylesheets/Nav.scss';
 
-import Person from "./Person";
+import Person from './Person';
 
-function Nav({ person, togglePerson }) {
+function Nav() {
 
   return (
     <nav>
-      <Person person={ person } togglePerson={ togglePerson } />
+      <Person />
     </nav>
   );
 }

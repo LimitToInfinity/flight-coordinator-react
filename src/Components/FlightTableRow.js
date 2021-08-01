@@ -1,18 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import moment from 'moment';
 
 import '../Stylesheets/FlightTableRow.scss';
 
-function FlightTableRow({ flight, toggleModal, toggleFlight }) {
+function FlightTableRow({ flight }) {
+
+  const dispatch = useDispatch();
 
   const day = moment.parseZone(flight.datetime_string).format('ddd');
   const date = moment.parseZone(flight.datetime_string).format('MMM DD');
   const time = moment.parseZone(flight.datetime_string).format('h:mm a');
 
   const handleClick = () => {
-    toggleFlight(flight);
-    toggleModal();
+    dispatch({ type: 'SET_FLIGHT', flight });
+    dispatch({ type: 'SHOW_MODAL' });
   }
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import moment from 'moment';
 
@@ -11,14 +12,15 @@ import { urls } from '../utilities/urls';
 import { authFetch } from '../utilities/functions';
 
 function Modal({
-    toggleModal,
-    toggleFlight,
-    person,
-    flight,
     addFlight,
     updateRide,
     removeRide
   }) {
+
+  const dispatch = useDispatch();
+
+  const person = useSelector(state => state.person);
+  const flight = useSelector(state => state.flight);
 
   const [datetime, setDatetime] = useState(
     moment.parseZone(flight.datetime_string) || moment(new Date())
@@ -29,8 +31,8 @@ function Modal({
   const [flightNumber, setFlightNumber] = useState('');
 
   const closeModal = () => {
-    toggleFlight();
-    toggleModal();
+    dispatch({ type: 'UNSET_FLIGHT' });
+    dispatch({ type: 'HIDE_MODAL' });
   }
 
   const handleDate = date => setDatetime(moment(date._d).format());
@@ -66,8 +68,6 @@ function Modal({
         <button className='close-modal' onClick={ closeModal }>X</button>
         {flight.id
           ? <AddRide
-            person={ person }
-            flight={ flight }
             datetime={ datetime }
             handleDate={ handleDate }
             handleSubmit={ handleSubmit }
