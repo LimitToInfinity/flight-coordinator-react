@@ -15,7 +15,7 @@ function Authorized() {
 
   const dispatch = useDispatch();
 
-  const showModal = useSelector(state => state.modal);
+  const showModal = useSelector(state => state.modal.showModal);
   const person = useSelector(state => state.person);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import '../Stylesheets/Travels.scss';
 
+import AddFlight from './AddFlight';
 import Flights from './Flights';
 
 function Travels() {
@@ -26,7 +27,7 @@ function Travels() {
   return (
     <section className='travels'>
       <button
-        onClick={() => dispatch({ type: 'SHOW_MODAL' })}
+        onClick={() => dispatch({ type: 'SHOW_MODAL', innerComponent: AddFlight })}
         className='add-flight'
       >
         Add flight

@@ -2,6 +2,8 @@ import { useDispatch } from 'react-redux';
 
 import moment from 'moment';
 
+import AddRide from './AddRide';
+
 import '../Stylesheets/FlightTableRow.scss';
 
 function FlightTableRow({ flight }) {
@@ -14,7 +16,7 @@ function FlightTableRow({ flight }) {
 
   const handleClick = () => {
     dispatch({ type: 'SET_FLIGHT', flight });
-    dispatch({ type: 'SHOW_MODAL' });
+    dispatch({ type: 'SHOW_MODAL', innerComponent: AddRide });
   }
 
   return (
