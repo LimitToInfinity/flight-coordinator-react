@@ -1,5 +1,3 @@
-import React from 'react';
-
 import '../Stylesheets/Flights.scss';
 
 import FlightTableHeader from './FlightTableHeader';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import '../Stylesheets/People.scss';
 
 import Person from './Person';
