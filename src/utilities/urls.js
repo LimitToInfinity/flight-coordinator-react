@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:3000';
+const baseURL = 'https://flightcoordinator.herokuapp.com';
 
 export const urls = {
   login: `${baseURL}/login`,
