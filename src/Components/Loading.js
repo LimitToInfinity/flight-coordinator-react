@@ -8,7 +8,7 @@ function Loading() {
         src='https://hackernoon.com/images/0*4Gzjgh9Y7Gu8KEtZ.gif'
       />
     </div>
-  )
+  );
 }
 
 export default Loading;

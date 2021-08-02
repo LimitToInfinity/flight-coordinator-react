@@ -21,6 +21,7 @@ function Login({ history }) {
 
   const handleSubmit = (event, guest) => {
     event.preventDefault();
+    dispatch({ type: 'LOADING' });
 
     const userBody = JSON.stringify({
       username: guest || username,
@@ -30,8 +31,9 @@ function Login({ history }) {
     noAuthFetch(urls.login, 'POST', userBody)
       .then(({token}) => {
         localStorage.setItem('token', token);
-        dispatch({ type: 'LOGIN' });
         history.replace('/choose');
+        dispatch({ type: 'LOGIN' });
+        dispatch({ type: 'LOADED' });
       })
       .catch(error => console.error(error));
   }

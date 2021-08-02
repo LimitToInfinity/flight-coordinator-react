@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
@@ -17,8 +17,7 @@ function App() {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector(state => state.login);
-
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoading = useSelector(state => state.loading);
 
   useEffect(() => {
     const handleToken = error => {
@@ -28,10 +27,10 @@ function App() {
     const checkTokenValidity = async () => {
       const { error } = await authFetch(urls.shuttles);
       handleToken(error);
-      setIsLoading(false);
+      dispatch({ type: 'LOADED' });
     }
 
-    localStorage.token ? checkTokenValidity() : setIsLoading(false);
+    localStorage.token ? checkTokenValidity() : dispatch({ type: 'LOADED' });
   }, [dispatch]);
 
   return (

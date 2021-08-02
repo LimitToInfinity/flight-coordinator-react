@@ -9,16 +9,9 @@ function MyRoutes() {
     <> 
       <Route path='/login' component={Login} />
       <Route path='/choose' component={Authorized} />
-      <Route
-        path='/flights'
-        render={() => <Travels
-          // allFlights={ flights }
-          // toggleModal={ toggleModal }
-          // toggleFlight={ setFlight }
-        />}
-      />
+      <Route path='/flights' component={Travels} />
     </>
-  )
+  );
 }
 
 export default MyRoutes;
