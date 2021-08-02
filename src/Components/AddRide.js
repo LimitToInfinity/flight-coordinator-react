@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import moment from 'moment';
 import Datetime from 'react-datetime';
 
@@ -20,28 +19,24 @@ function AddRide({ closeModal }) {
     moment.parseZone(flight.datetime_string)
   );
 
-  const yesterday = Datetime.moment().subtract(1, 'day');
-  const oneYearFromNow = Datetime.moment().add(1, 'year');
-  const isValid = current => {
-    return current.isAfter(yesterday)
-      && current.isBefore(oneYearFromNow);
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    flight.ride
-      ? updateCurrentRide(person, flight, datetime, dispatch)
-      : createRide(person, flight, datetime, dispatch);
-
-    closeModal();
-  }
-
   const deleteRide = () => {
     const deleteURL = `${urls.rides}/${flight.ride.id}`;
     authFetch(deleteURL, 'DELETE');
 
     dispatch({ type: 'REMOVE_RIDE', modifiedFlightId: flight.id });
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    const { value } = event.nativeEvent.submitter;
+    if (value === 'Give ride') {
+      flight.ride
+        ? updateCurrentRide(person, flight, datetime, dispatch)
+        : createRide(person, flight, datetime, dispatch);
+    } else if (value === 'Remove ride') {
+      deleteRide();
+    }
 
     closeModal();
   }
@@ -49,42 +44,48 @@ function AddRide({ closeModal }) {
   const verbage = {
     arrival: { h2: 'Pick up', p: 'arrives', label: 'will' },
     departure: { h2: 'Drop off', p: 'departs', label: 'should' }
-  }
+  };
+  const { direction, traveler, airport } = flight;
   const inputProps = { id: 'datetime', name: 'datetime' };
+  const twoDaysBeforeFlight = moment.parseZone(flight.datetime_string).subtract(2, 'day');
+  const dayAfterFlight = moment.parseZone(flight.datetime_string).add(1, 'day');
+  const isValid = currentDate => {
+    return currentDate.isAfter(twoDaysBeforeFlight)
+      && currentDate.isBefore(dayAfterFlight);
+  };
   const isDriver = flight.ride && (person.id === flight.ride.driver.id);
 
   return (
     <>
-      <h2>{ verbage[flight.direction].h2 } { flight.traveler.name }
-        <img alt={ flight.traveler.name } src={ flight.traveler.image } />
+      <h2>
+        { verbage[direction].h2 } { traveler.name }
+        <img alt={ traveler.name } src={ traveler.image } />
       </h2>
       <p>
-        { flight.traveler.name } { verbage[flight.direction].p } { moment(flight.datetime).format('ddd MM/DD/YYYY h:mm a') } at { flight.airport }
+        { traveler.name } { verbage[direction].p } { moment(flight.datetime).format('ddd MM/DD/YYYY h:mm a') } at { airport }
       </p>
 
       <form className='add-ride' onSubmit={ handleSubmit }>
         <label htmlFor='datetime'>
-          When { verbage[flight.direction].label } you be at the airport?
+          When { verbage[direction].label } you be at the airport?
         </label>
         <Datetime 
-          onChange={ date => setDatetime(moment(date._d).format()) }
-          initialValue={
-            flight.direction === 'arrival'
-              ? moment(datetime)
-              : moment(datetime).subtract(105, 'minutes')
-          }
-          isValidDate={ isValid }
           inputProps={ inputProps }
+          isValidDate={ isValid }
+          initialValue={
+            direction === 'arrival'
+            ? moment(datetime)
+            : moment(datetime).subtract(105, 'minutes')
+          }
+          onChange={ date => setDatetime(moment(date._d).format()) }
         />
 
         <div className='form-buttons'>
           {isDriver
-            ? <button type='button' className='delete-ride' onClick={ deleteRide }>
-              Remove ride
-            </button>
+            ? <input type='submit' className='delete-ride' value='Remove ride' />
             : <div></div>
           }
-          <input type='submit' value='Submit' />
+          <input type='submit' value='Give ride' />
         </div>
       </form>
     </>

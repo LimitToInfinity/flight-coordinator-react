@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-
 import moment from 'moment';
 
 import '../Stylesheets/Travels.scss';
