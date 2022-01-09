@@ -68,7 +68,7 @@ function AddFlight({ closeModal }) {
         />
 
         <Select
-          name='airline' 
+          name='airline'
           onChange={ event => setAirline(event.target.value) }
           defaultText='Which airline?'
           optionTexts={[
@@ -83,7 +83,7 @@ function AddFlight({ closeModal }) {
         />
 
         <Select
-          name='airport' 
+          name='airport'
           onChange={ event => setAirport(event.target.value) }
           defaultText='Which airport?'
           optionTexts={ ['Bush (IAH)', 'Hobby (HOU)'] }
