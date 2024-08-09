@@ -1,4 +1,4 @@
-const baseURL = 'https://flightcoordinator.herokuapp.com';
+const baseURL = 'https://flightcoordinatorbe-production.up.railway.app';
 
 export const urls = {
   login: `${baseURL}/login`,
